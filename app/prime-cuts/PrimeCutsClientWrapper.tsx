@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
 
-const categories = ["All", "Beef", "Lamb", "Poultry", "Pork", "Signature Reserve", "Mountain Range"];
+const categories = ["All", "Beef", "Lamb", "Poultry", "Pork", "Seafood", "Exotic Meats", "Vegetables & Sides", "Signature Reserve", "Mountain Range"];
 
 interface PrimeCutsClientWrapperProps {
     initialProducts: any[];

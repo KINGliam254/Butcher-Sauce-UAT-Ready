@@ -10,7 +10,7 @@ export default async function PrimeCutsPage() {
     const { data: products } = await supabase
         .from('products')
         .select('*')
-        .not('category', 'in', '("Artisanal Sauces","Master Tools")')
+        .not('category', 'in', '("Sauces & Marinades","Master Tools")')
         .order('created_at', { ascending: false });
 
     return <PrimeCutsClientWrapper initialProducts={products || []} />;

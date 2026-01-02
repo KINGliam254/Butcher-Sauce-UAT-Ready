@@ -9,7 +9,7 @@ export default async function ArtisanalSelectionPage() {
     const { data: products } = await supabase
         .from('products')
         .select('*')
-        .in('category', ['Artisanal Sauces', 'Master Tools', 'Signature Reserve', 'Dry Rubs', 'Small Batch'])
+        .in('category', ['Sauces & Marinades', 'Master Tools', 'Signature Reserve', 'Dry Rubs', 'Small Batch'])
         .order('category', { ascending: true });
 
     return (

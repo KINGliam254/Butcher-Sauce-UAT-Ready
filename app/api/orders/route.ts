@@ -16,7 +16,9 @@ export async function POST(request: Request) {
                 customer_name: customer.name,
                 email: customer.email,
                 phone: customer.phone,
-                address: customer.address,
+                address: customer.fulfillment === 'pickup'
+                    ? `PICKUP: ${customer.pickup_location}`
+                    : customer.address,
                 total_amount: total,
                 payment_method: payment.method,
                 payment_status: payment.method === 'mpesa' ? 'awaiting_stk' : 'pending',

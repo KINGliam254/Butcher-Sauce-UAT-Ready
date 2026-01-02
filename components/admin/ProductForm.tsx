@@ -317,9 +317,12 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                     <option value="Lamb">Lamb</option>
                                     <option value="Poultry">Poultry</option>
                                     <option value="Pork">Pork</option>
+                                    <option value="Seafood">Seafood</option>
+                                    <option value="Exotic Meats">Exotic Meats</option>
+                                    <option value="Sauces & Marinades">Sauces & Marinades</option>
+                                    <option value="Vegetables & Sides">Vegetables & Sides</option>
                                     <option value="Signature Reserve">Signature Reserve</option>
                                     <option value="Mountain Range">Mountain Range</option>
-                                    <option value="Artisanal Sauces">Artisanal Sauces</option>
                                     <option value="Master Tools">Master Tools</option>
                                     <option value="Drinks">Drinks</option>
                                 </select>

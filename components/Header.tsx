@@ -23,10 +23,10 @@ export default function Header() {
 
   const navLinks = [
     { name: "Prime Cuts", href: "/prime-cuts" },
-    { name: "Artisanal Sauces", href: "/artisanal-sauces" },
-    { name: "Drinks", href: "/drinks" },
+    { name: "Sauces & Marinades", href: "/artisanal-sauces" },
+    { name: "Chef's Corner", href: "/chefs-corner" },
     { name: "The Butchery", href: "/the-butchery" },
-    { name: "Contact", href: "/contact" },
+    { name: "Corporate", href: "/corporate" },
   ];
 
   return (

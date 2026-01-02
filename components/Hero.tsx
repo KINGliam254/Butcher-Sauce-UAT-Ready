@@ -28,11 +28,11 @@ export default function Hero() {
                         The Gold Standard of Meats
                     </span>
                     <h1 className="text-5xl md:text-8xl font-serif font-bold text-black mb-8 leading-[1.1]">
-                        Artisanal Cuts, <br />
-                        <span className="italic font-light text-zinc-500 font-serif">Unrivaled Flavor.</span>
+                        We define the art of <br />
+                        <span className="italic font-light text-zinc-500 font-serif">preparing meat in Kenya.</span>
                     </h1>
                     <p className="text-zinc-600 text-base md:text-lg max-w-2xl mx-auto mb-12 font-light leading-relaxed">
-                        Experience the finest selection of Kenyan meats, dry-aged to perfection and delivered with the care of a master butcher.
+                        Giving Kenyans access to premium aged beef and tender goat at the standard they deserve. Experience the artisanal mission of Butcher & Sauce.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                         <Link href="/prime-cuts" className="px-10 py-5 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm shadow-xl">

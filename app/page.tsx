@@ -108,6 +108,7 @@ export default async function Home() {
           </div>
 
           <div className="pt-12 border-t border-black/5">
+            <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold mb-2">Nyama Since 1999</p>
             <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold">© 2026 Butcher & Sauce. All Rights Reserved.</p>
           </div>
         </div>

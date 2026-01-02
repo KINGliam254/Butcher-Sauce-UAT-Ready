@@ -16,7 +16,7 @@ export default function CheckoutPage() {
     const [isProcessing, setIsProcessing] = useState(false);
     const router = useRouter();
 
-    const deliveryFee = 350;
+    const deliveryFee = fulfillmentMethod === "delivery" ? 350 : 0;
     const total = subtotal + deliveryFee;
 
     // Form States
@@ -28,6 +28,8 @@ export default function CheckoutPage() {
         instructions: ""
     });
 
+    const [fulfillmentMethod, setFulfillmentMethod] = useState<"delivery" | "pickup">("delivery");
+    const [pickupLocation, setPickupLocation] = useState("");
     const [paymentMethod, setPaymentMethod] = useState<"mpesa" | "card" | "cash">("mpesa");
     const [paymentDetails, setPaymentDetails] = useState({
         mpesaNumber: "",
@@ -37,10 +39,25 @@ export default function CheckoutPage() {
         cvv: ""
     });
 
+    const pickupLocations = [
+        "OiLibya South B (Partner)",
+        "OiLibya Westlands (Partner)",
+        "OiLibya Ngong Road (Partner)",
+        "Butcher & Sauce Flagship (Evergreen Square)"
+    ];
+
     const validateDelivery = () => {
         const { name, email, phone, address } = deliveryInfo;
-        if (!name || !email || !phone || !address) {
-            alert("Please fill in all delivery details.");
+        if (!name || !email || !phone) {
+            alert("Please fill in your contact details.");
+            return false;
+        }
+        if (fulfillmentMethod === "delivery" && !address) {
+            alert("Please provide a delivery address.");
+            return false;
+        }
+        if (fulfillmentMethod === "pickup" && !pickupLocation) {
+            alert("Please select a pickup point.");
             return false;
         }
         return true;
@@ -68,7 +85,11 @@ export default function CheckoutPage() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    customer: deliveryInfo,
+                    customer: {
+                        ...deliveryInfo,
+                        fulfillment: fulfillmentMethod,
+                        pickup_location: pickupLocation
+                    },
                     items: cart,
                     payment: {
                         method: paymentMethod,
@@ -138,8 +159,24 @@ export default function CheckoutPage() {
                                     className="space-y-10"
                                 >
                                     <div className="space-y-4">
-                                        <h1 className="text-3xl md:text-5xl font-serif font-bold text-black leading-tight">Delivery <span className="italic font-light text-zinc-400">Details.</span></h1>
-                                        <p className="text-zinc-500 font-light">Where shall we deliver your artisanal selection?</p>
+                                        <h1 className="text-3xl md:text-5xl font-serif font-bold text-black leading-tight">Order <span className="italic font-light text-zinc-400">Fulfillment.</span></h1>
+                                        <p className="text-zinc-500 font-light">Tell us how you'd like to receive your master-cut selection.</p>
+                                    </div>
+
+                                    {/* Fulfillment Toggle */}
+                                    <div className="flex p-1 bg-neutral-soft rounded-sm w-full md:w-[400px]">
+                                        <button
+                                            onClick={() => setFulfillmentMethod("delivery")}
+                                            className={`flex-1 py-3 text-[10px] uppercase tracking-widest font-bold rounded-sm transition-all ${fulfillmentMethod === "delivery" ? "bg-black text-white shadow-lg" : "text-zinc-400 hover:text-black"}`}
+                                        >
+                                            Doorstep Delivery
+                                        </button>
+                                        <button
+                                            onClick={() => setFulfillmentMethod("pickup")}
+                                            className={`flex-1 py-3 text-[10px] uppercase tracking-widest font-bold rounded-sm transition-all ${fulfillmentMethod === "pickup" ? "bg-black text-white shadow-lg" : "text-zinc-400 hover:text-black"}`}
+                                        >
+                                            Click & Collect
+                                        </button>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -174,14 +211,32 @@ export default function CheckoutPage() {
                                             />
                                         </div>
                                         <div className="space-y-2 md:col-span-2">
-                                            <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Delivery Address</label>
-                                            <input
-                                                type="text"
-                                                className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-gold transition-all font-serif"
-                                                placeholder="Street Name, Apartment, House No."
-                                                value={deliveryInfo.address}
-                                                onChange={(e) => setDeliveryInfo({ ...deliveryInfo, address: e.target.value })}
-                                            />
+                                            {fulfillmentMethod === "delivery" ? (
+                                                <>
+                                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Delivery Address</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-gold transition-all font-serif"
+                                                        placeholder="Street Name, Apartment, House No."
+                                                        value={deliveryInfo.address}
+                                                        onChange={(e) => setDeliveryInfo({ ...deliveryInfo, address: e.target.value })}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Pick-up Location</label>
+                                                    <select
+                                                        className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-gold transition-all font-serif appearance-none cursor-pointer"
+                                                        value={pickupLocation}
+                                                        onChange={(e) => setPickupLocation(e.target.value)}
+                                                    >
+                                                        <option value="">Select a pickup point...</option>
+                                                        {pickupLocations.map(loc => (
+                                                            <option key={loc} value={loc}>{loc}</option>
+                                                        ))}
+                                                    </select>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
 
@@ -374,10 +429,12 @@ export default function CheckoutPage() {
                                     <div className="bg-neutral-soft p-10 rounded-sm space-y-8">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                                             <div className="space-y-4">
-                                                <p className="text-[10px] uppercase tracking-widest text-gold font-bold">Delivery To</p>
+                                                <p className="text-[10px] uppercase tracking-widest text-gold font-bold">{fulfillmentMethod === "delivery" ? "Delivery To" : "Pickup From"}</p>
                                                 <div>
                                                     <p className="text-black font-serif italic text-lg">{deliveryInfo.name}</p>
-                                                    <p className="text-zinc-500 text-sm font-light mt-1">{deliveryInfo.address}</p>
+                                                    <p className="text-zinc-500 text-sm font-light mt-1">
+                                                        {fulfillmentMethod === "delivery" ? deliveryInfo.address : pickupLocation}
+                                                    </p>
                                                     <p className="text-zinc-500 text-sm font-light">{deliveryInfo.phone}</p>
                                                 </div>
                                             </div>
