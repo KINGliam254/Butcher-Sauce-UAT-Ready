@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingBag, Search } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import SearchModal from "./SearchModal";
 
@@ -48,8 +49,20 @@ export default function Header() {
         </div>
 
         {/* Brand Logo */}
-        <Link href="/" className="text-2xl md:text-3xl font-serif font-bold tracking-[0.2em] uppercase text-black flex items-center">
-          Butcher <span className="text-gold mx-1">&</span> Sauce
+        <Link href="/" className="group relative">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            className="relative w-16 md:w-20 aspect-square"
+          >
+            <Image
+              src="/logo.png"
+              alt="Butcher & Sauce Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </motion.div>
         </Link>
 
         {/* Icons & Actions */}

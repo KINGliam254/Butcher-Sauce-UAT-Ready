@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
@@ -107,9 +108,21 @@ export default async function Home() {
             ))}
           </div>
 
-          <div className="pt-12 border-t border-black/5">
-            <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold mb-2">Nyama Since 1999</p>
-            <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold">© 2026 Butcher & Sauce. All Rights Reserved.</p>
+          <div className="pt-12 border-t border-black/5 flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="space-y-4">
+              <div className="relative w-24 aspect-square mb-6 opacity-80 hover:opacity-100 transition-opacity">
+                <Image
+                  src="/logo.png"
+                  alt="Butcher & Sauce"
+                  fill
+                  className="object-contain grayscale"
+                />
+              </div>
+              <div>
+                <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold mb-2">Nyama Since 1999</p>
+                <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold">© 2026 Butcher & Sauce. All Rights Reserved.</p>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
