@@ -35,40 +35,27 @@ export default function Header() {
     <nav className={`fixed w-full z-50 transition-all duration-500 px-6 md:px-12 py-6 ${scrolled ? "bg-white/80 backdrop-blur-md border-b border-black/5 py-4" : "bg-transparent"
       }`}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-12">
-          {navLinks.slice(0, 2).map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-600 hover:text-gold transition-colors"
+        <div className="flex items-center gap-12">
+          {/* Brand Logo */}
+          <Link href="/" className="group relative">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              className="relative w-16 md:w-20 aspect-square"
             >
-              {link.name}
-            </Link>
-          ))}
-        </div>
+              <Image
+                src="/logo.png"
+                alt="Butcher & Sauce Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </motion.div>
+          </Link>
 
-        {/* Brand Logo */}
-        <Link href="/" className="group relative">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            className="relative w-16 md:w-20 aspect-square"
-          >
-            <Image
-              src="/logo.png"
-              alt="Butcher & Sauce Logo"
-              fill
-              className="object-contain"
-              priority
-            />
-          </motion.div>
-        </Link>
-
-        {/* Icons & Actions */}
-        <div className="flex items-center gap-6 md:gap-8">
-          <div className="hidden lg:flex items-center gap-12 mr-8">
-            {navLinks.slice(2).map((link) => (
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-12">
+            {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
@@ -78,7 +65,10 @@ export default function Header() {
               </Link>
             ))}
           </div>
+        </div>
 
+        {/* Icons & Actions */}
+        <div className="flex items-center gap-6 md:gap-8">
           <button
             onClick={() => setIsSearchOpen(true)}
             className="text-zinc-600 hover:text-gold transition-colors"
