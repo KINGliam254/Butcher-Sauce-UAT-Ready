@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Header from "@/components/Header";
 
 const recipes = [
     {
@@ -34,7 +33,6 @@ const recipes = [
 export default function ChefsCorner() {
     return (
         <div className="bg-white min-h-screen pt-32 pb-24">
-            <Header />
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 <div className="text-center mb-20">
                     <motion.span

@@ -1,13 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
 import { ShieldCheck, Briefcase, Users, Phone } from "lucide-react";
 
 export default function CorporateSales() {
     return (
         <div className="bg-white min-h-screen pt-32 pb-24">
-            <Header />
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                     <motion.div

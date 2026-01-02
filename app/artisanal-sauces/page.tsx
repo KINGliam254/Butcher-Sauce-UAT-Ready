@@ -9,7 +9,7 @@ export default async function ArtisanalSelectionPage() {
     const { data: products } = await supabase
         .from('products')
         .select('*')
-        .in('category', ['Sauces & Marinades', 'Master Tools', 'Signature Reserve', 'Dry Rubs', 'Small Batch'])
+        .in('category', ['Sauces & Marinades', 'Signature Reserve', 'Dry Rubs', 'Small Batch'])
         .order('category', { ascending: true });
 
     return (
@@ -20,10 +20,10 @@ export default async function ArtisanalSelectionPage() {
                         Master Selection
                     </span>
                     <h1 className="text-4xl md:text-6xl font-serif font-bold text-black mb-8">
-                        Sauces <span className="italic font-light text-zinc-400">&</span> Tools
+                        Sauces <span className="italic font-light text-zinc-400">&</span> Marinades
                     </h1>
                     <p className="text-zinc-500 max-w-2xl mx-auto text-sm md:text-base font-light leading-relaxed">
-                        Elevate your craft. Our selection of artisanal sauces and hand-forged tools are designed for those who treat butchery as a fine art.
+                        Elevate your craft. Our selection of artisanal sauces and marinades are balanced to perfection to elevate every cut.
                     </p>
                 </div>
 
