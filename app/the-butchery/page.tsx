@@ -73,7 +73,7 @@ export default function TheButcheryPage() {
                     <div className="w-20 h-20 bg-white rounded-full shadow-premium flex items-center justify-center mb-8">
                         <Snowflake className="text-gold" size={32} />
                     </div>
-                    <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold block">The Sanctuary</span>
+                    <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold block">The Butcher's Spot</span>
                     <h2 className="text-4xl md:text-7xl font-serif font-bold text-black leading-tight max-w-4xl">
                         Inside Our <span className="italic font-light text-zinc-400">Salt-Maturity Room.</span>
                     </h2>
@@ -127,17 +127,6 @@ export default function TheButcheryPage() {
                 </div>
             </section>
 
-            {/* Final CTA */}
-            <section className="py-32 border-t border-black/5 bg-white text-center">
-                <div className="max-w-2xl mx-auto px-6 space-y-10">
-                    <Users className="text-gold mx-auto" size={40} strokeWidth={1} />
-                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-black">Meet Our Butchers.</h2>
-                    <p className="text-zinc-500 font-light leading-relaxed">Our master butchers are available for private consultations on custom cuts and aging cycles.</p>
-                    <button className="px-12 py-6 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm shadow-xl">
-                        Schedule a Consultation
-                    </button>
-                </div>
-            </section>
         </div>
     );
 }
