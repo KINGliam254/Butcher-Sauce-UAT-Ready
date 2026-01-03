@@ -1,11 +1,52 @@
 "use client";
 
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Briefcase, Users, Phone, Award, Sparkles, Globe, TrendingUp } from "lucide-react";
 
 export default function CorporateSales() {
+    const [formData, setFormData] = React.useState({
+        companyName: "",
+        contactPerson: "",
+        email: "",
+        serviceRequired: "Wholesale Meat Supply",
+        message: ""
+    });
+    const [status, setStatus] = React.useState<"idle" | "submitting" | "success" | "error">("idle");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus("submitting");
+
+        try {
+            const res = await fetch("/api/corporate/inquiry", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+
+            if (res.ok) {
+                setStatus("success");
+                setFormData({
+                    companyName: "",
+                    contactPerson: "",
+                    email: "",
+                    serviceRequired: "Wholesale Meat Supply",
+                    message: ""
+                });
+            } else {
+                const errorData = await res.json();
+                console.error("Inquiry Error:", errorData);
+                setStatus("error");
+            }
+        } catch (error) {
+            console.error("Submission Error:", error);
+            setStatus("error");
+        }
+    };
+
     return (
-        <div className="bg-white min-h-screen pt-32 pb-24">
+        <div className="bg-white min-h-screen pt-56 pb-24">
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                     <motion.div
@@ -50,37 +91,91 @@ export default function CorporateSales() {
                             <p className="text-zinc-500 text-xs uppercase tracking-widest font-bold">Direct B2B Relationship</p>
                         </div>
 
-                        <form className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Company Name</label>
-                                    <input className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all" />
+                        {status === "success" ? (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="bg-emerald-50 border border-emerald-100 p-8 text-center space-y-4"
+                            >
+                                <Sparkles className="mx-auto text-emerald-500" size={40} />
+                                <h3 className="text-xl font-serif font-bold text-emerald-900">Inquiry Received.</h3>
+                                <p className="text-sm text-emerald-700 font-light">
+                                    Our corporate relations team will contact you shortly to discuss your requirements.
+                                </p>
+                                <button
+                                    onClick={() => setStatus("idle")}
+                                    className="text-[10px] uppercase tracking-widest font-bold text-emerald-900 underline underline-offset-8"
+                                >
+                                    Send Another
+                                </button>
+                            </motion.div>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Company Name</label>
+                                        <input
+                                            required
+                                            value={formData.companyName}
+                                            onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                                            className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Contact Person</label>
+                                        <input
+                                            required
+                                            value={formData.contactPerson}
+                                            onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                                            className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all"
+                                        />
+                                    </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Contact Person</label>
-                                    <input className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all" />
+                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Email Address</label>
+                                    <input
+                                        required
+                                        type="email"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all"
+                                    />
                                 </div>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Email Address</label>
-                                <input type="email" className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all" />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Service Required</label>
-                                <select className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all appearance-none cursor-pointer">
-                                    <option>Wholesale Meat Supply</option>
-                                    <option>Event Catering</option>
-                                    <option>Partner Pickup Station Inquiry</option>
-                                </select>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Message</label>
-                                <textarea rows={4} className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all resize-none" />
-                            </div>
-                            <button className="w-full py-5 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl">
-                                Submit Inquiry
-                            </button>
-                        </form>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Service Required</label>
+                                    <select
+                                        value={formData.serviceRequired}
+                                        onChange={(e) => setFormData({ ...formData, serviceRequired: e.target.value })}
+                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all appearance-none cursor-pointer"
+                                    >
+                                        <option>Wholesale Meat Supply</option>
+                                        <option>Event Catering</option>
+                                        <option>Partner Pickup Station Inquiry</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Message</label>
+                                    <textarea
+                                        required
+                                        rows={4}
+                                        value={formData.message}
+                                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all resize-none"
+                                    />
+                                </div>
+                                <button
+                                    disabled={status === "submitting"}
+                                    className="w-full py-5 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {status === "submitting" ? "Processing..." : "Submit Inquiry"}
+                                </button>
+                                {status === "error" && (
+                                    <p className="text-[10px] text-ruby uppercase tracking-widest font-bold text-center">
+                                        An error occurred. Please try again.
+                                    </p>
+                                )}
+                            </form>
+                        )}
                     </motion.div>
                 </div>
 

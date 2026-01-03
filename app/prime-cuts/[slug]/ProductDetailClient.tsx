@@ -44,7 +44,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
     };
 
     return (
-        <div className="bg-white min-h-screen pt-32 pb-24">
+        <div className="bg-white min-h-screen pt-56 pb-24">
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Breadcrumbs / Back */}
                 <Link

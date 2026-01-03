@@ -13,7 +13,7 @@ export default async function ArtisanalSelectionPage() {
         .order('category', { ascending: true });
 
     return (
-        <div className="bg-white min-h-screen pt-32">
+        <div className="bg-white min-h-screen pt-56">
             <section className="section-padding max-w-7xl mx-auto">
                 <div className="text-center mb-20">
                     <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block">

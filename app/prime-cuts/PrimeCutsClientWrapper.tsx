@@ -18,7 +18,7 @@ export default function PrimeCutsClientWrapper({ initialProducts }: PrimeCutsCli
         : initialProducts.filter(p => p.category === activeCategory);
 
     return (
-        <div className="bg-white min-h-screen pt-32">
+        <div className="bg-white min-h-screen pt-56">
             <section className="section-padding max-w-7xl mx-auto">
                 <div className="text-center mb-20">
                     <motion.span

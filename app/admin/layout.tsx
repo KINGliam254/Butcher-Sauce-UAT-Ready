@@ -16,6 +16,7 @@ const sidebarLinks = [
     { name: "Overview", href: "/admin", icon: LayoutDashboard },
     { name: "Orders", href: "/admin/orders", icon: ShoppingBag },
     { name: "Products", href: "/admin/products", icon: Package },
+    { name: "Inquiries", href: "/admin/inquiries", icon: Users },
 ];
 
 export default function AdminLayout({
@@ -46,8 +47,8 @@ export default function AdminLayout({
                                 key={link.name}
                                 href={link.href}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-sm text-[10px] uppercase tracking-widest font-bold transition-all duration-300 ${isActive
-                                        ? "bg-gold text-black shadow-lg shadow-gold/10"
-                                        : "hover:bg-zinc-900 hover:text-white"
+                                    ? "bg-gold text-black shadow-lg shadow-gold/10"
+                                    : "hover:bg-zinc-900 hover:text-white"
                                     }`}
                             >
                                 <link.icon size={16} />

@@ -61,13 +61,16 @@ export default async function Home() {
           </div>
 
           <div className="space-y-8">
-            <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-medium block">Our Heritage</span>
-            <h2 className="text-4xl md:text-6xl font-serif font-bold text-black leading-tight">
-              A Legacy of <br />
-              <span className="italic font-light text-zinc-400 font-serif">Purity & Precision.</span>
+            <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-medium block">Problem Worth Solving</span>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-black leading-tight">
+              Redefining the Art of <br />
+              <span className="italic font-light text-zinc-400 font-serif">Preparing Meat in Kenya.</span>
             </h2>
             <p className="text-zinc-600 text-lg font-light leading-relaxed">
-              At Butcher & Sauce, we believe that the finest meals start with the finest ingredients. Our journey began with a simple mission: to provide the Kenyan table with meats of unparalleled quality, sourced from ethically raised livestock and prepared with master craftsmanship.
+              We produce fine meat and extremely individual sauces and products. Kenyans have very few places they can access good quality beef and reliable meat supply with ease.
+            </p>
+            <p className="text-zinc-600 text-base font-light leading-relaxed mt-4">
+              There is a need to give Kenyans a chance to buy aged beef and tender goat stripes at a very reasonable price on the way home, without necessarily having to go into a shopping mall. The market also lacks a Butchery lead who can offer leadership in meat retail.
             </p>
             <div className="grid grid-cols-2 gap-12 pt-8 border-t border-black/5">
               <div>
@@ -89,7 +92,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
             {/* Branding Column */}
             <div className="space-y-8">
-              <div className="relative w-20 h-20 grayscale opacity-80 hover:opacity-100 transition-opacity">
+              <div className="relative w-24 h-32 grayscale opacity-80 hover:opacity-100 transition-opacity">
                 <Image
                   src="/logo.png"
                   alt="Butcher & Sauce"

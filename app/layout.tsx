@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
-import { CartProvider } from "@/context/CartContext";
-import CartDrawer from "@/components/CartDrawer";
-import Chatbot from "@/components/Chatbot";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import { Inter } from "next/font/google";
+import { CartProvider } from "@/context/CartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-white text-black antialiased selection:bg-ruby selection:text-black overflow-x-hidden`}>
         <CartProvider>
-          <Header />
-          <CartDrawer />
-          <main>{children}</main>
-          <Chatbot />
+          <ClientLayoutWrapper>
+            {children}
+          </ClientLayoutWrapper>
         </CartProvider>
       </body>
     </html>

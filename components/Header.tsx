@@ -41,7 +41,7 @@ export default function Header() {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                className="relative w-16 md:w-20 aspect-square"
+                className="relative w-20 md:w-28 aspect-[3.5/5]"
               >
                 <Image
                   src="/logo.png"
