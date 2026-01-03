@@ -14,6 +14,7 @@ import StatusSelect from "@/components/admin/StatusSelect";
 import OrderDetailsModal from "@/components/admin/OrderDetailsModal";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect } from "react";
+import { formatCurrency } from "@/utils/format";
 
 interface OrdersClientWrapperProps {
     orders: any[];
@@ -46,7 +47,7 @@ export default function OrdersClientWrapper({ orders: initialOrders }: OrdersCli
                     // Simple browser beep simulation or visual focus
                     if (window.Notification && Notification.permission === "granted") {
                         new Notification("New Order Received!", {
-                            body: `Order from ${newOrder.customer_name} for Ksh ${newOrder.total_amount}`,
+                            body: `Order from ${newOrder.customer_name} for ${formatCurrency(newOrder.total_amount)}`,
                         });
                     }
                 }
@@ -140,7 +141,7 @@ export default function OrdersClientWrapper({ orders: initialOrders }: OrdersCli
                                     <StatusSelect orderId={order.id} initialStatus={order.status} />
                                 </td>
                                 <td className="px-8 py-6 font-serif font-bold text-white italic">
-                                    Ksh {Number(order.total_amount).toLocaleString()}
+                                    {formatCurrency(Number(order.total_amount))}
                                 </td>
                                 <td className="px-8 py-6">
                                     <div className="flex items-center gap-2 text-[10px] text-zinc-500 uppercase tracking-widest font-bold">

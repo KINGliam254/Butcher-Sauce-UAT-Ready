@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { formatCurrency } from "@/utils/format";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -135,7 +136,7 @@ export default function CartDrawer() {
                                                         <Plus size={12} />
                                                     </button>
                                                 </div>
-                                                <p className="font-serif italic text-black">{item.price}</p>
+                                                <p className="font-serif italic text-black">{formatCurrency(item.price)}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -149,7 +150,7 @@ export default function CartDrawer() {
                                 <div className="space-y-2">
                                     <div className="flex justify-between items-center">
                                         <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold shrink-0">Subtotal</span>
-                                        <span className="text-xl font-serif font-bold text-black whitespace-nowrap">Ksh {subtotal.toLocaleString()}</span>
+                                        <span className="text-xl font-serif font-bold text-black whitespace-nowrap">{formatCurrency(subtotal)}</span>
                                     </div>
                                     <p className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold">Shipping & taxes calculated at checkout.</p>
                                 </div>

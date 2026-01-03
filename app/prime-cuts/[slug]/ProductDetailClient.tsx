@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Minus, Plus, ShoppingBag, ArrowLeft, ShieldCheck, Truck, Star } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { formatCurrency } from "@/utils/format";
 
 export default function ProductDetailClient({ product }: { product: any }) {
     const [quantity, setQuantity] = useState(1);
@@ -26,8 +27,8 @@ export default function ProductDetailClient({ product }: { product: any }) {
             : (dbNumericPrice >= (parsedFromDisplay * 0.1) ? dbNumericPrice : parsedFromDisplay);
 
         const currentPriceLabel = product.is_on_sale
-            ? `Ksh ${Number(product.sale_price).toLocaleString()}`
-            : product.price_display;
+            ? formatCurrency(product.sale_price)
+            : formatCurrency(product.price_display);
 
         addItem({
             slug: product.slug,
@@ -80,12 +81,12 @@ export default function ProductDetailClient({ product }: { product: any }) {
                             <div className="flex items-center gap-6">
                                 {product.is_on_sale ? (
                                     <>
-                                        <p className="text-3xl md:text-4xl font-serif text-black font-bold">Ksh {product.sale_price?.toLocaleString()}</p>
-                                        <p className="text-lg md:text-xl font-serif text-zinc-300 italic line-through decoration-ruby/30">{product.price_display}</p>
+                                        <p className="text-3xl md:text-4xl font-serif text-black font-bold">{formatCurrency(product.sale_price)}</p>
+                                        <p className="text-lg md:text-xl font-serif text-zinc-300 italic line-through decoration-ruby/30">{formatCurrency(product.price_display)}</p>
                                         <span className="bg-ruby text-black text-[9px] font-bold px-3 py-1 uppercase tracking-widest">Limited Offer</span>
                                     </>
                                 ) : (
-                                    <p className="text-2xl font-serif text-zinc-400 italic">{product.price_display}</p>
+                                    <p className="text-2xl font-serif text-zinc-400 italic">{formatCurrency(product.price_display)}</p>
                                 )}
                             </div>
                         </motion.div>

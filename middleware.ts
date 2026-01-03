@@ -15,7 +15,15 @@ export async function middleware(request: NextRequest) {
         }
     }
 
-    return await updateSession(request)
+    // Optimization: Only update session if on an admin route or if a supabase auth cookie exists.
+    // This avoids blocking public page renders with unnecessary network requests to Supabase.
+    // Optimization: Only update session if strictly on an admin route.
+    // Public pages do NOT need server-side auth validation for this project.
+    if (pathname.startsWith('/admin')) {
+        return await updateSession(request);
+    }
+
+    return NextResponse.next();
 }
 
 export const config = {
@@ -25,8 +33,8 @@ export const config = {
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
-         * Feel free to modify this pattern to include more paths.
+         * - Public folder assets (images, logos, etc.)
          */
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+        '/((?!_next/static|_next/image|favicon.ico|logo\\.png|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff2?|map)$).*)',
     ],
 }

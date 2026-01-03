@@ -8,6 +8,7 @@ import {
     ArrowDownRight,
     Clock
 } from "lucide-react";
+import { formatCurrency } from "@/utils/format";
 
 export default async function AdminDashboard() {
     const cookieStore = cookies();
@@ -21,10 +22,10 @@ export default async function AdminDashboard() {
     const pendingOrders = orders?.filter(o => o.status === 'pending').length || 0;
 
     const stats = [
-        { label: "Total Revenue", value: `Ksh ${totalRevenue.toLocaleString()}`, icon: DollarSign, trend: "+12.5%", positive: true },
+        { label: "Total Revenue", value: formatCurrency(totalRevenue), icon: DollarSign, trend: "+12.5%", positive: true },
         { label: "Total Orders", value: totalOrders.toString(), icon: ShoppingBag, trend: "+4.3%", positive: true },
         { label: "Pending Orders", value: pendingOrders.toString(), icon: Clock, trend: "-2.1%", positive: false },
-        { label: "Average Order", value: totalOrders ? `Ksh ${(totalRevenue / totalOrders).toLocaleString()}` : "0", icon: TrendingUp, trend: "+8.1%", positive: true },
+        { label: "Average Order", value: totalOrders ? formatCurrency(totalRevenue / totalOrders) : "Ksh 0", icon: TrendingUp, trend: "+8.1%", positive: true },
     ];
 
     return (
@@ -73,7 +74,7 @@ export default async function AdminDashboard() {
                                     style={{ height: `${Math.floor(Math.random() * 80) + 20}%` }}
                                 />
                                 <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[8px] bg-white text-black px-2 py-1 rounded-sm font-bold">
-                                    Ksh {Math.floor(Math.random() * 50000).toLocaleString()}
+                                    {formatCurrency(Math.floor(Math.random() * 50000))}
                                 </div>
                             </div>
                         ))}

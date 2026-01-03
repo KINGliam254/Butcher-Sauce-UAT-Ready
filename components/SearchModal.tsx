@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search as SearchIcon, X, ArrowRight, ShoppingBag, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/format";
 
 interface Product {
     id: string;
@@ -133,7 +134,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                     <span className="text-[9px] uppercase tracking-widest text-ruby font-bold">{product.category}</span>
                                                     <h3 className="text-xl font-serif font-bold text-black group-hover:text-ruby transition-colors">{product.name}</h3>
                                                     <div className="flex items-center gap-2 text-zinc-400">
-                                                        <span className="text-sm font-medium">{product.price_display}</span>
+                                                        <span className="text-sm font-medium">{formatCurrency(product.price_display)}</span>
                                                         <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                                                     </div>
                                                 </div>

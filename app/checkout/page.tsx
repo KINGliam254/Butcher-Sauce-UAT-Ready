@@ -7,6 +7,7 @@ import { ChevronRight, MapPin, CreditCard, ChevronLeft, ShieldCheck, ShoppingBag
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/format";
 
 type Step = "delivery" | "payment" | "review";
 
@@ -305,7 +306,7 @@ export default function CheckoutPage() {
                                                         <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Till Number</span>
                                                         <span className="text-2xl font-serif font-bold text-ruby">594 2201</span>
                                                     </div>
-                                                    <p className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold text-center">Amount: Ksh {total.toLocaleString()}</p>
+                                                    <p className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold text-center">Amount: {formatCurrency(total)}</p>
                                                 </div>
 
                                                 <div className="p-8 bg-neutral-soft rounded-sm space-y-6">
@@ -563,7 +564,7 @@ export default function CheckoutPage() {
                                         <div className="flex-1 min-w-0">
                                             <p className="text-[9px] uppercase tracking-widest text-ruby font-bold">{item.category}</p>
                                             <h3 className="text-xs font-serif font-bold text-black truncate">{item.name}</h3>
-                                            <p className="text-[10px] text-zinc-400 mt-1">{item.quantity}x {item.price}</p>
+                                            <p className="text-[10px] text-zinc-400 mt-1">{item.quantity}x {formatCurrency(item.price)}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -572,16 +573,16 @@ export default function CheckoutPage() {
                             <div className="space-y-4 pt-8 border-t border-black/5">
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="text-zinc-500">Subtotal</span>
-                                    <span className="font-serif">Ksh {subtotal.toLocaleString()}</span>
+                                    <span className="font-serif">{formatCurrency(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="text-zinc-500">Delivery Fee</span>
-                                    <span className="font-serif">Ksh {deliveryFee}</span>
+                                    <span className="font-serif">{formatCurrency(deliveryFee)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-lg pt-4">
                                     <span className="font-serif font-bold">Total</span>
                                     <span className="font-serif font-bold text-black underline underline-offset-8 decoration-ruby/30">
-                                        Ksh {total.toLocaleString()}
+                                        {formatCurrency(total)}
                                     </span>
                                 </div>
                             </div>

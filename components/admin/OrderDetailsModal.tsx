@@ -1,6 +1,7 @@
 "use client";
 
 import { X, ShoppingBag, User, MapPin, CreditCard, Phone, Calendar } from "lucide-react";
+import { formatCurrency } from "@/utils/format";
 
 interface OrderDetailsModalProps {
     order: any;
@@ -76,7 +77,7 @@ export default function OrderDetailsModal({ order, onClose }: OrderDetailsModalP
                                             <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-bold">Entry ID: {item.product_slug}</p>
                                         </div>
                                     </div>
-                                    <p className="font-serif font-bold text-white italic">Ksh {Number(item.price).toLocaleString()}</p>
+                                    <p className="font-serif font-bold text-white italic">{formatCurrency(item.price)}</p>
                                 </div>
                             ))}
                             {!order.items?.length && (
@@ -99,7 +100,7 @@ export default function OrderDetailsModal({ order, onClose }: OrderDetailsModalP
                         <div className="flex items-center justify-between pt-4">
                             <span className="text-[10px] uppercase tracking-[0.4em] text-gold font-bold">Total Valuation</span>
                             <span className="text-3xl font-serif font-bold text-white italic tracking-tight">
-                                Ksh {Number(order.total_amount).toLocaleString()}
+                                {formatCurrency(order.total_amount)}
                             </span>
                         </div>
                     </div>

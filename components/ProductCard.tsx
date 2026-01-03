@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { formatCurrency } from "@/utils/format";
 
 interface ProductCardProps {
     slug: string;
@@ -34,6 +35,7 @@ export default function ProductCard({
     const category = product?.category || propCategory;
     const isOnSale = product?.is_on_sale;
     const salePrice = product?.sale_price;
+    const numericPrice = product?.numeric_price || propNumericPrice;
 
     const handleQuickAdd = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -57,7 +59,7 @@ export default function ProductCard({
         addItem({
             slug,
             name,
-            price: isOnSale ? `Ksh ${Number(salePrice).toLocaleString()}` : priceDisplay,
+            price: isOnSale ? formatCurrency(salePrice) : formatCurrency(priceDisplay),
             numericPrice: finalNumericPrice,
             category,
             image,
@@ -103,11 +105,11 @@ export default function ProductCard({
                     <div className="flex items-center gap-3">
                         {isOnSale ? (
                             <>
-                                <p className="text-ruby text-xs sm:text-sm font-bold">Ksh {salePrice?.toLocaleString()}</p>
-                                <p className="text-zinc-400 text-[10px] sm:text-xs line-through opacity-70">{priceDisplay}</p>
+                                <p className="text-ruby text-xs sm:text-sm font-bold">{formatCurrency(salePrice)}</p>
+                                <p className="text-zinc-400 text-[10px] sm:text-xs line-through opacity-70">{formatCurrency(numericPrice || priceDisplay)}</p>
                             </>
                         ) : (
-                            <p className="text-zinc-500 text-xs sm:text-sm font-medium">{priceDisplay}</p>
+                            <p className="text-zinc-500 text-xs sm:text-sm font-medium">{formatCurrency(numericPrice || priceDisplay)}</p>
                         )}
                     </div>
                 </div>

@@ -10,12 +10,12 @@ export default function Hero() {
             {/* Background with pseudo-image effect since gen failed */}
             <div className="absolute inset-0 z-0 bg-white">
                 <div
-                    className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-multiply"
+                    className="absolute inset-0 bg-cover bg-center"
                     style={{
                         backgroundImage: "url('https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80')"
                     }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-white" />
+                <div className="absolute inset-0 bg-black/40" />
             </div>
 
             <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
@@ -27,18 +27,18 @@ export default function Hero() {
                     <span className="text-ruby text-xs md:text-sm uppercase tracking-[0.4em] font-medium mb-6 block">
                         The Ruby Standard of Meats
                     </span>
-                    <h1 className="text-5xl md:text-8xl font-serif font-bold text-black mb-8 leading-[1.1]">
+                    <h1 className="text-5xl md:text-8xl font-serif font-bold text-white mb-8 leading-[1.1]">
                         We define the art of <br />
-                        <span className="italic font-light text-zinc-500 font-serif">preparing meat in Kenya.</span>
+                        <span className="italic font-light text-zinc-300 font-serif">preparing meat in Kenya.</span>
                     </h1>
-                    <p className="text-zinc-600 text-base md:text-lg max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+                    <p className="text-zinc-200 text-base md:text-lg max-w-2xl mx-auto mb-12 font-light leading-relaxed">
                         Giving Kenyans access to premium aged beef and tender goat at the standard they deserve. Experience the artisanal mission of Butcher & Sauce.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                        <Link href="/prime-cuts" className="px-10 py-5 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl">
+                        <Link href="/prime-cuts" className="px-10 py-5 bg-white text-black uppercase text-[10px] tracking-widest font-bold hover:bg-ruby hover:text-white transition-all duration-500 rounded-sm shadow-xl">
                             Explore The Cuts
                         </Link>
-                        <Link href="/the-butchery" className="px-10 py-5 border border-black/10 text-black uppercase text-[10px] tracking-widest font-bold hover:bg-black hover:text-white transition-all duration-500 rounded-sm">
+                        <Link href="/the-butchery" className="px-10 py-5 border border-white/20 text-white uppercase text-[10px] tracking-widest font-bold hover:bg-white hover:text-black transition-all duration-500 rounded-sm">
                             Our Vision
                         </Link>
                     </div>
