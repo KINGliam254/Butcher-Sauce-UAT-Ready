@@ -42,9 +42,9 @@ export default async function AdminDashboard() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, idx) => (
-                    <div key={idx} className="bg-zinc-900/50 border border-zinc-800/50 p-6 rounded-sm space-y-4 hover:border-gold/30 transition-colors group">
+                    <div key={idx} className="bg-zinc-900/50 border border-zinc-800/50 p-6 rounded-sm space-y-4 hover:border-ruby/30 transition-colors group">
                         <div className="flex items-center justify-between">
-                            <div className="w-10 h-10 bg-zinc-900 rounded-sm flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-black transition-all">
+                            <div className="w-10 h-10 bg-zinc-900 rounded-sm flex items-center justify-center text-ruby group-hover:bg-ruby group-hover:text-black transition-all">
                                 <stat.icon size={20} />
                             </div>
                             <div className={`flex items-center gap-1 text-[10px] font-bold ${stat.positive ? "text-emerald-500" : "text-rose-500"}`}>
@@ -67,9 +67,9 @@ export default async function AdminDashboard() {
                     <div className="h-[300px] flex items-end justify-between px-4 pb-4">
                         {/* Simple Bar Chart Visualization using Divs */}
                         {Array.from({ length: 12 }).map((_, i) => (
-                            <div key={i} className="w-8 bg-zinc-800/50 hover:bg-gold/50 transition-colors rounded-t-sm relative group">
+                            <div key={i} className="w-8 bg-zinc-800/50 hover:bg-ruby/50 transition-colors rounded-t-sm relative group">
                                 <div
-                                    className="absolute bottom-0 w-full bg-gold/20 group-hover:bg-gold/40 transition-all rounded-t-sm"
+                                    className="absolute bottom-0 w-full bg-ruby/20 group-hover:bg-ruby/40 transition-all rounded-t-sm"
                                     style={{ height: `${Math.floor(Math.random() * 80) + 20}%` }}
                                 />
                                 <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[8px] bg-white text-black px-2 py-1 rounded-sm font-bold">

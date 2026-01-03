@@ -184,7 +184,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-gold/50 text-sm text-white transition-all"
+                                    className="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-ruby/50 text-sm text-white transition-all"
                                     placeholder="Product Name (e.g. Dry-Aged Ribeye)"
                                 />
                                 <input
@@ -192,7 +192,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                     name="slug"
                                     value={formData.slug}
                                     onChange={handleChange}
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-gold/50 text-xs text-zinc-400 font-mono transition-all"
+                                    className="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-ruby/50 text-xs text-zinc-400 font-mono transition-all"
                                     placeholder="slug-url-identifier"
                                 />
                             </div>
@@ -204,12 +204,12 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                             <div className="flex gap-4">
                                 <div
                                     onClick={() => fileInputRef.current?.click()}
-                                    className="flex-1 border-2 border-dashed border-zinc-800 rounded-sm p-8 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-gold/30 hover:bg-gold/[0.02] transition-all group"
+                                    className="flex-1 border-2 border-dashed border-zinc-800 rounded-sm p-8 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-ruby/30 hover:bg-ruby/[0.02] transition-all group"
                                 >
                                     {isUploading ? (
-                                        <Loader2 size={24} className="text-gold animate-spin" />
+                                        <Loader2 size={24} className="text-ruby animate-spin" />
                                     ) : (
-                                        <Upload size={24} className="text-zinc-500 group-hover:text-gold transition-colors" />
+                                        <Upload size={24} className="text-zinc-500 group-hover:text-ruby transition-colors" />
                                     )}
                                     <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 group-hover:text-white transition-colors">
                                         {isUploading ? "Uploading..." : "Upload Local Media"}
@@ -241,7 +241,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                 name="image_url"
                                 value={formData.image_url}
                                 onChange={handleChange}
-                                className="w-full bg-zinc-900/50 border border-zinc-800 p-3 rounded-sm focus:outline-none focus:border-gold/50 text-[10px] text-zinc-500 transition-all font-mono"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 p-3 rounded-sm focus:outline-none focus:border-ruby/50 text-[10px] text-zinc-500 transition-all font-mono"
                                 placeholder="Or paste external URL..."
                             />
                         </div>
@@ -255,7 +255,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                     name="price_display"
                                     value={formData.price_display}
                                     onChange={handleChange}
-                                    className="bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-gold/50 text-sm text-white transition-all"
+                                    className="bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-ruby/50 text-sm text-white transition-all"
                                     placeholder="Price Display (Ksh 4,500 / kg)"
                                 />
                                 <input
@@ -264,7 +264,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                     name="numeric_price"
                                     value={formData.numeric_price}
                                     onChange={handleChange}
-                                    className="bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-gold/50 text-sm text-white transition-all"
+                                    className="bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-ruby/50 text-sm text-white transition-all"
                                     placeholder="Numeric Value (4500)"
                                 />
                             </div>
@@ -277,7 +277,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                         name="is_on_sale"
                                         checked={formData.is_on_sale}
                                         onChange={handleChange}
-                                        className="w-4 h-4 rounded border-zinc-800 bg-zinc-900 text-gold focus:ring-gold"
+                                        className="w-4 h-4 rounded border-zinc-800 bg-zinc-900 text-ruby focus:ring-ruby"
                                     />
                                     <div className="flex flex-col">
                                         <span className="text-[10px] uppercase tracking-widest font-bold text-white">Active Discount</span>
@@ -295,7 +295,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                             name="sale_price"
                                             value={formData.sale_price}
                                             onChange={handleChange}
-                                            className="w-full bg-black border border-zinc-800 p-3 rounded-sm focus:outline-none focus:border-gold/50 text-sm text-gold font-bold transition-all"
+                                            className="w-full bg-black border border-zinc-800 p-3 rounded-sm focus:outline-none focus:border-ruby/50 text-sm text-ruby font-bold transition-all"
                                             placeholder="Sale Price (e.g. 3800)"
                                         />
                                     </motion.div>
@@ -311,7 +311,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                     name="category"
                                     value={formData.category}
                                     onChange={handleChange}
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-gold/50 text-sm text-white appearance-none cursor-pointer"
+                                    className="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-ruby/50 text-sm text-white appearance-none cursor-pointer"
                                 >
                                     <option value="Beef">Beef</option>
                                     <option value="Lamb">Lamb</option>
@@ -334,7 +334,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                         name="is_featured"
                                         checked={formData.is_featured}
                                         onChange={handleChange}
-                                        className="w-4 h-4 rounded border-zinc-800 bg-zinc-900 text-gold focus:ring-gold"
+                                        className="w-4 h-4 rounded border-zinc-800 bg-zinc-900 text-ruby focus:ring-ruby"
                                     />
                                     <span className="text-[10px] uppercase tracking-widest font-bold text-white">Featured Item</span>
                                 </div>
@@ -344,7 +344,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                         name="has_prep_options"
                                         checked={formData.has_prep_options}
                                         onChange={handleChange}
-                                        className="w-4 h-4 rounded border-zinc-800 bg-zinc-900 text-gold focus:ring-gold"
+                                        className="w-4 h-4 rounded border-zinc-800 bg-zinc-900 text-ruby focus:ring-ruby"
                                     />
                                     <div className="flex flex-col">
                                         <span className="text-[10px] uppercase tracking-widest font-bold text-white">Cooking Options</span>
@@ -362,7 +362,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                 value={formData.description}
                                 onChange={handleChange}
                                 rows={4}
-                                className="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-gold/50 text-sm text-white transition-all resize-none"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-sm focus:outline-none focus:border-ruby/50 text-sm text-white transition-all resize-none"
                                 placeholder="Describe the cut, origin, and flavor profile..."
                             />
                         </div>
@@ -374,7 +374,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                 <button
                                     type="button"
                                     onClick={addSpec}
-                                    className="text-[9px] uppercase tracking-widest font-bold text-gold hover:text-white flex items-center gap-1 transition-colors"
+                                    className="text-[9px] uppercase tracking-widest font-bold text-ruby hover:text-white flex items-center gap-1 transition-colors"
                                 >
                                     <Plus size={10} /> Add Property
                                 </button>
@@ -386,7 +386,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                                         <input
                                             value={value}
                                             onChange={(e) => handleSpecChange(key, e.target.value)}
-                                            className="flex-1 bg-zinc-900/30 border border-zinc-800 p-2 rounded-sm text-xs text-white focus:outline-none focus:border-gold/30"
+                                            className="flex-1 bg-zinc-900/30 border border-zinc-800 p-2 rounded-sm text-xs text-white focus:outline-none focus:border-ruby/30"
                                             placeholder="..."
                                         />
                                         <button
@@ -409,7 +409,7 @@ export default function ProductForm({ product, onClose, onSuccess }: ProductForm
                         <button
                             type="submit"
                             disabled={isSaving || isUploading}
-                            className="flex-1 bg-gold text-black py-5 rounded-sm text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white transition-all shadow-xl shadow-gold/10 flex items-center justify-center gap-2 disabled:opacity-50"
+                            className="flex-1 bg-ruby text-black py-5 rounded-sm text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white transition-all shadow-xl shadow-ruby/10 flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                             {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                             {product ? "Update Master Catalog" : "Publish to Selection"}

@@ -78,9 +78,9 @@ export default function OrdersClientWrapper({ orders: initialOrders }: OrdersCli
                             initial={{ opacity: 0, scale: 0.9, y: 10 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                            className="fixed top-10 right-10 z-[1000] bg-gold text-black p-6 rounded-sm shadow-2xl flex items-center gap-6 min-w-[320px]"
+                            className="fixed top-10 right-10 z-[1000] bg-ruby text-black p-6 rounded-sm shadow-2xl flex items-center gap-6 min-w-[320px]"
                         >
-                            <div className="bg-black text-gold p-3 rounded-full">
+                            <div className="bg-black text-ruby p-3 rounded-full">
                                 <Bell size={24} className="animate-bounce" />
                             </div>
                             <div className="flex-1">
@@ -106,7 +106,7 @@ export default function OrdersClientWrapper({ orders: initialOrders }: OrdersCli
                             placeholder="Search orders..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="bg-zinc-900 border border-zinc-800 pl-12 pr-6 py-3 rounded-sm focus:outline-none focus:border-gold/50 text-xs text-white min-w-[300px] transition-all"
+                            className="bg-zinc-900 border border-zinc-800 pl-12 pr-6 py-3 rounded-sm focus:outline-none focus:border-ruby/50 text-xs text-white min-w-[300px] transition-all"
                         />
                     </div>
                 </div>
@@ -132,7 +132,7 @@ export default function OrdersClientWrapper({ orders: initialOrders }: OrdersCli
                                 </td>
                                 <td className="px-8 py-6">
                                     <div className="flex flex-col gap-0.5">
-                                        <span className="text-sm font-serif font-bold text-white tracking-wide group-hover:text-gold transition-colors">{order.customer_name}</span>
+                                        <span className="text-sm font-serif font-bold text-white tracking-wide group-hover:text-ruby transition-colors">{order.customer_name}</span>
                                         <span className="text-[10px] text-zinc-500 uppercase tracking-widest">{order.email}</span>
                                     </div>
                                 </td>
@@ -151,7 +151,7 @@ export default function OrdersClientWrapper({ orders: initialOrders }: OrdersCli
                                 <td className="px-8 py-6 text-right">
                                     <button
                                         onClick={() => setSelectedOrder(order)}
-                                        className="p-2 hover:bg-zinc-900 rounded-sm transition-colors text-zinc-600 hover:text-gold flex items-center justify-center gap-2"
+                                        className="p-2 hover:bg-zinc-900 rounded-sm transition-colors text-zinc-600 hover:text-ruby flex items-center justify-center gap-2"
                                     >
                                         <Eye size={18} />
                                         <span className="text-[10px] uppercase tracking-widest font-bold hidden group-hover:block">Dossier</span>

@@ -185,7 +185,7 @@ export default function CheckoutPage() {
                                             <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Full Name</label>
                                             <input
                                                 type="text"
-                                                className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-gold transition-all font-serif"
+                                                className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-ruby transition-all font-serif"
                                                 placeholder="Adrian Saitoti"
                                                 value={deliveryInfo.name}
                                                 onChange={(e) => setDeliveryInfo({ ...deliveryInfo, name: e.target.value })}
@@ -195,7 +195,7 @@ export default function CheckoutPage() {
                                             <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Email Address</label>
                                             <input
                                                 type="email"
-                                                className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-gold transition-all font-serif"
+                                                className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-ruby transition-all font-serif"
                                                 placeholder="adrian@example.com"
                                                 value={deliveryInfo.email}
                                                 onChange={(e) => setDeliveryInfo({ ...deliveryInfo, email: e.target.value })}
@@ -205,7 +205,7 @@ export default function CheckoutPage() {
                                             <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Phone Number</label>
                                             <input
                                                 type="tel"
-                                                className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-gold transition-all font-serif"
+                                                className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-ruby transition-all font-serif"
                                                 placeholder="+254 700 000 000"
                                                 value={deliveryInfo.phone}
                                                 onChange={(e) => setDeliveryInfo({ ...deliveryInfo, phone: e.target.value })}
@@ -217,7 +217,7 @@ export default function CheckoutPage() {
                                                     <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Delivery Address</label>
                                                     <input
                                                         type="text"
-                                                        className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-gold transition-all font-serif"
+                                                        className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-ruby transition-all font-serif"
                                                         placeholder="Street Name, Apartment, House No."
                                                         value={deliveryInfo.address}
                                                         onChange={(e) => setDeliveryInfo({ ...deliveryInfo, address: e.target.value })}
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
                                                 <>
                                                     <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Pick-up Location</label>
                                                     <select
-                                                        className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-gold transition-all font-serif appearance-none cursor-pointer"
+                                                        className="w-full bg-neutral-soft border border-black/5 px-4 py-4 rounded-sm focus:bg-white focus:outline-none focus:border-ruby transition-all font-serif appearance-none cursor-pointer"
                                                         value={pickupLocation}
                                                         onChange={(e) => setPickupLocation(e.target.value)}
                                                     >
@@ -295,15 +295,15 @@ export default function CheckoutPage() {
                                             >
                                                 <div className="p-8 bg-black text-white rounded-sm space-y-4">
                                                     <div className="flex items-center gap-3 mb-2">
-                                                        <div className="w-8 h-8 bg-gold rounded-full flex items-center justify-center text-black font-black text-xs">1</div>
+                                                        <div className="w-8 h-8 bg-ruby rounded-full flex items-center justify-center text-black font-black text-xs">1</div>
                                                         <p className="text-[10px] uppercase tracking-widest font-bold">Payment Instructions</p>
                                                     </div>
                                                     <p className="text-sm font-serif italic text-zinc-400">
-                                                        Go to M-Pesa &gt; Lipa na M-Pesa &gt; <span className="text-gold font-bold">Buy Goods & Services</span>
+                                                        Go to M-Pesa &gt; Lipa na M-Pesa &gt; <span className="text-ruby font-bold">Buy Goods & Services</span>
                                                     </p>
                                                     <div className="flex justify-between items-center py-4 border-y border-white/10">
                                                         <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Till Number</span>
-                                                        <span className="text-2xl font-serif font-bold text-gold">594 2201</span>
+                                                        <span className="text-2xl font-serif font-bold text-ruby">594 2201</span>
                                                     </div>
                                                     <p className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold text-center">Amount: Ksh {total.toLocaleString()}</p>
                                                 </div>
@@ -414,7 +414,7 @@ export default function CheckoutPage() {
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -10 }}
-                                                className="p-8 bg-neutral-soft rounded-sm border border-gold/10"
+                                                className="p-8 bg-neutral-soft rounded-sm border border-ruby/10"
                                             >
                                                 <p className="text-black font-serif italic text-lg">Cash on Delivery selected.</p>
                                                 <p className="text-zinc-500 text-sm mt-2 font-light">Please ensure someone is available at the delivery address to make the payment upon arrival of your artisanal selection.</p>
@@ -431,7 +431,7 @@ export default function CheckoutPage() {
                                         </button>
                                         <button
                                             onClick={handleNext}
-                                            className="flex-1 px-12 py-5 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm shadow-xl"
+                                            className="flex-1 px-12 py-5 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl"
                                         >
                                             Review My Order
                                         </button>
@@ -513,7 +513,7 @@ export default function CheckoutPage() {
                                         <button
                                             onClick={handlePlaceOrder}
                                             disabled={isProcessing}
-                                            className="flex-1 px-12 py-5 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
+                                            className="flex-1 px-12 py-5 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
                                         >
                                             {isProcessing ? "Processing..." : (
                                                 <>

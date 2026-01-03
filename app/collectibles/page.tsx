@@ -16,7 +16,7 @@ export default async function CollectiblesPage() {
         <div className="bg-white min-h-screen pt-32">
             <section className="section-padding max-w-7xl mx-auto">
                 <div className="text-center mb-20">
-                    <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block">
+                    <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block">
                         The Master's Workshop
                     </span>
                     <h1 className="text-4xl md:text-6xl font-serif font-bold text-black mb-8">
@@ -51,7 +51,7 @@ export default async function CollectiblesPage() {
                     </div>
 
                     <div className="space-y-8">
-                        <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold block">Forged Integrity</span>
+                        <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-bold block">Forged Integrity</span>
                         <h2 className="text-4xl md:text-5xl font-serif font-bold leading-tight">
                             Tools that <br />
                             <span className="italic font-light text-zinc-500 font-serif text-white">Honor the Meat.</span>
@@ -61,11 +61,11 @@ export default async function CollectiblesPage() {
                         </p>
                         <div className="flex gap-12 pt-8 border-t border-white/10">
                             <div>
-                                <h4 className="text-gold font-serif text-2xl mb-2 italic">Lifetime</h4>
+                                <h4 className="text-ruby font-serif text-2xl mb-2 italic">Lifetime</h4>
                                 <p className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold">Durability</p>
                             </div>
                             <div>
-                                <h4 className="text-gold font-serif text-2xl mb-2 italic">Master</h4>
+                                <h4 className="text-ruby font-serif text-2xl mb-2 italic">Master</h4>
                                 <p className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold">Precision</p>
                             </div>
                         </div>

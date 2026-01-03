@@ -41,8 +41,8 @@ export default function AdminLoginPage() {
     return (
         <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-6 font-sans">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gold/5 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-gold/5 blur-[120px] rounded-full" />
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-ruby/5 blur-[120px] rounded-full" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-ruby/5 blur-[120px] rounded-full" />
             </div>
 
             <motion.div
@@ -51,11 +51,11 @@ export default function AdminLoginPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <div className="text-center mb-12 space-y-4">
-                    <div className="w-16 h-16 bg-zinc-900 border border-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Lock className="text-gold" size={24} />
+                    <div className="w-16 h-16 bg-zinc-900 border border-ruby/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Lock className="text-ruby" size={24} />
                     </div>
                     <h1 className="text-3xl font-serif font-bold text-white tracking-widest uppercase">
-                        Admin <span className="text-gold">Portal.</span>
+                        Admin <span className="text-ruby">Portal.</span>
                     </h1>
                     <p className="text-zinc-500 text-[10px] uppercase tracking-[0.4em] font-bold">Secure Access Required</p>
                 </div>
@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Master Password"
-                                className="w-full bg-zinc-900/50 border border-zinc-800 px-6 py-5 rounded-sm text-white focus:outline-none focus:border-gold transition-all font-serif placeholder:text-zinc-700 placeholder:italic"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 px-6 py-5 rounded-sm text-white focus:outline-none focus:border-ruby transition-all font-serif placeholder:text-zinc-700 placeholder:italic"
                                 required
                             />
                         </div>
@@ -86,7 +86,7 @@ export default function AdminLoginPage() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full py-5 bg-gold text-black uppercase text-[10px] tracking-[0.2em] font-black hover:bg-white transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3 group disabled:opacity-50"
+                        className="w-full py-5 bg-ruby text-black uppercase text-[10px] tracking-[0.2em] font-black hover:bg-white transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3 group disabled:opacity-50"
                     >
                         {isLoading ? "Verifying..." : (
                             <>

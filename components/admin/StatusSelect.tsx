@@ -66,7 +66,7 @@ export default function StatusSelect({ orderId, initialStatus }: StatusSelectPro
                         <button
                             key={option.value}
                             onClick={() => handleStatusChange(option.value)}
-                            className={`w-full flex items-center justify-between px-4 py-3 text-[8px] uppercase tracking-widest font-bold transition-colors hover:bg-zinc-800 text-left ${status === option.value ? "text-gold" : "text-zinc-500"
+                            className={`w-full flex items-center justify-between px-4 py-3 text-[8px] uppercase tracking-widest font-bold transition-colors hover:bg-zinc-800 text-left ${status === option.value ? "text-ruby" : "text-zinc-500"
                                 }`}
                         >
                             {option.label}

@@ -16,7 +16,7 @@ export default async function ArtisanalSelectionPage() {
         <div className="bg-white min-h-screen pt-32">
             <section className="section-padding max-w-7xl mx-auto">
                 <div className="text-center mb-20">
-                    <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block">
+                    <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block">
                         Master Selection
                     </span>
                     <h1 className="text-4xl md:text-6xl font-serif font-bold text-black mb-8">
@@ -43,7 +43,7 @@ export default async function ArtisanalSelectionPage() {
             <section className="bg-neutral-soft section-padding border-t border-black/5">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                     <div className="space-y-8">
-                        <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold block">The Craft</span>
+                        <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-bold block">The Craft</span>
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-black leading-tight">
                             Small Batches, <br />
                             <span className="italic font-light text-zinc-400 font-serif">Big Flavor Profiles.</span>
