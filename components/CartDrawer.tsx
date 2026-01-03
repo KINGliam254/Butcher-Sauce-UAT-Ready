@@ -33,7 +33,7 @@ export default function CartDrawer() {
                         {/* Header */}
                         <div className="p-8 border-b border-black/5 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <ShoppingBag size={20} className="text-gold" />
+                                <ShoppingBag size={20} className="text-ruby" />
                                 <h2 className="text-xl font-serif font-bold text-black uppercase tracking-widest">
                                     Butcher's Bag
                                 </h2>
@@ -62,7 +62,7 @@ export default function CartDrawer() {
                                     </div>
                                     <button
                                         onClick={() => setIsCartOpen(false)}
-                                        className="px-8 py-4 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm"
+                                        className="px-8 py-4 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm"
                                     >
                                         Explore Collection
                                     </button>
@@ -71,17 +71,39 @@ export default function CartDrawer() {
                                 cart.map((item, idx) => (
                                     <div key={`${item.slug}-${idx}`} className="flex gap-6 border-b border-black/5 pb-8 last:border-0">
                                         <div className="relative w-24 aspect-[4/5] bg-neutral-soft rounded-sm overflow-hidden shrink-0">
-                                            <Image
-                                                src={item.image}
-                                                alt={item.name}
-                                                fill
-                                                className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                                            />
+                                            {(() => {
+                                                let isValid = false;
+                                                if (item.image && typeof item.image === 'string') {
+                                                    try {
+                                                        if (item.image.startsWith('/')) {
+                                                            isValid = true;
+                                                        } else {
+                                                            new URL(item.image);
+                                                            isValid = true;
+                                                        }
+                                                    } catch (e) {
+                                                        isValid = false;
+                                                    }
+                                                }
+
+                                                return isValid ? (
+                                                    <Image
+                                                        src={item.image}
+                                                        alt={item.name}
+                                                        fill
+                                                        className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center bg-zinc-100">
+                                                        <ShoppingBag size={24} className="text-zinc-300" />
+                                                    </div>
+                                                );
+                                            })()}
                                         </div>
                                         <div className="flex-1 space-y-3">
                                             <div className="flex justify-between items-start">
                                                 <div>
-                                                    <span className="text-[9px] uppercase tracking-widest text-gold font-bold">{item.category}</span>
+                                                    <span className="text-[9px] uppercase tracking-widest text-ruby font-bold">{item.category}</span>
                                                     <h3 className="text-base font-serif font-bold text-black">{item.name}</h3>
                                                     {(item.preparation || item.doneness) && (
                                                         <p className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold mt-1">
@@ -135,7 +157,7 @@ export default function CartDrawer() {
                                 <Link
                                     href="/checkout"
                                     onClick={() => setIsCartOpen(false)}
-                                    className="w-full py-6 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3 group"
+                                    className="w-full py-6 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3 group"
                                 >
                                     Proceed to Payment
                                     <ShoppingBag size={14} className="group-hover:-translate-y-1 transition-transform" />

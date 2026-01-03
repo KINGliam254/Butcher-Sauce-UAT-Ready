@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-white text-black antialiased selection:bg-gold selection:text-black overflow-x-hidden`}>
+      <body className={`${inter.className} bg-white text-black antialiased selection:bg-ruby selection:text-black overflow-x-hidden`}>
         <CartProvider>
           <Header />
           <CartDrawer />

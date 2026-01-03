@@ -83,14 +83,14 @@ export default function ProductCard({
                     {/* Sale Badge */}
                     {isOnSale && (
                         <div className="absolute top-4 left-4 z-10">
-                            <span className="bg-gold text-black text-[9px] font-bold px-3 py-1.5 uppercase tracking-widest shadow-xl">Sale</span>
+                            <span className="bg-ruby text-black text-[9px] font-bold px-3 py-1.5 uppercase tracking-widest shadow-xl">Sale</span>
                         </div>
                     )}
 
                     {/* Quick Add Button Decorative */}
                     <button
                         onClick={handleQuickAdd}
-                        className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-10 h-10 sm:w-12 sm:h-12 bg-black text-white flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 shadow-xl z-20 hover:bg-gold hover:text-black"
+                        className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-10 h-10 sm:w-12 sm:h-12 bg-black text-white flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 shadow-xl z-20 hover:bg-ruby hover:text-black"
                     >
                         <Plus size={18} className="sm:hidden" />
                         <Plus size={20} className="hidden sm:block" />
@@ -98,12 +98,12 @@ export default function ProductCard({
                 </div>
 
                 <div className="space-y-1 sm:space-y-1.5 px-1">
-                    <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-gold font-bold">{category}</span>
-                    <h3 className="text-base sm:text-lg font-serif font-bold text-black group-hover:text-gold transition-colors line-clamp-1">{name}</h3>
+                    <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-ruby font-bold">{category}</span>
+                    <h3 className="text-base sm:text-lg font-serif font-bold text-black group-hover:text-ruby transition-colors line-clamp-1">{name}</h3>
                     <div className="flex items-center gap-3">
                         {isOnSale ? (
                             <>
-                                <p className="text-gold text-xs sm:text-sm font-bold">Ksh {salePrice?.toLocaleString()}</p>
+                                <p className="text-ruby text-xs sm:text-sm font-bold">Ksh {salePrice?.toLocaleString()}</p>
                                 <p className="text-zinc-400 text-[10px] sm:text-xs line-through opacity-70">{priceDisplay}</p>
                             </>
                         ) : (

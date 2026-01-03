@@ -11,7 +11,7 @@ export default function ContactPage() {
                     <motion.span
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block"
+                        className="text-ruby text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block"
                     >
                         Connect With Us
                     </motion.span>
@@ -44,8 +44,8 @@ export default function ContactPage() {
                             <h2 className="text-3xl font-serif font-bold text-black">The Butchery HQ</h2>
                             <div className="space-y-6">
                                 <div className="flex items-start gap-6 group">
-                                    <div className="w-12 h-12 rounded-sm bg-neutral-soft flex items-center justify-center transition-colors group-hover:bg-gold/10">
-                                        <MapPin className="text-gold" size={20} />
+                                    <div className="w-12 h-12 rounded-sm bg-neutral-soft flex items-center justify-center transition-colors group-hover:bg-ruby/10">
+                                        <MapPin className="text-ruby" size={20} />
                                     </div>
                                     <div>
                                         <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-1">Visit Us</p>
@@ -54,8 +54,8 @@ export default function ContactPage() {
                                 </div>
 
                                 <div className="flex items-start gap-6 group">
-                                    <div className="w-12 h-12 rounded-sm bg-neutral-soft flex items-center justify-center transition-colors group-hover:bg-gold/10">
-                                        <Phone className="text-gold" size={20} />
+                                    <div className="w-12 h-12 rounded-sm bg-neutral-soft flex items-center justify-center transition-colors group-hover:bg-ruby/10">
+                                        <Phone className="text-ruby" size={20} />
                                     </div>
                                     <div>
                                         <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-1">Direct Line</p>
@@ -64,8 +64,8 @@ export default function ContactPage() {
                                 </div>
 
                                 <div className="flex items-start gap-6 group">
-                                    <div className="w-12 h-12 rounded-sm bg-neutral-soft flex items-center justify-center transition-colors group-hover:bg-gold/10">
-                                        <Mail className="text-gold" size={20} />
+                                    <div className="w-12 h-12 rounded-sm bg-neutral-soft flex items-center justify-center transition-colors group-hover:bg-ruby/10">
+                                        <Mail className="text-ruby" size={20} />
                                     </div>
                                     <div>
                                         <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-1">Reservations</p>
@@ -77,20 +77,14 @@ export default function ContactPage() {
 
                         <div className="space-y-8 pt-12 border-t border-black/5">
                             <h3 className="text-2xl font-serif font-bold text-black">Operational Hours</h3>
-                            <div className="grid grid-cols-2 gap-8">
-                                <div>
-                                    <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-1">Weekdays</p>
-                                    <p className="text-black font-serif italic text-lg">08:00 — 19:00</p>
-                                </div>
-                                <div>
-                                    <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-1">Weekends</p>
-                                    <p className="text-black font-serif italic text-lg">09:00 — 16:00</p>
-                                </div>
+                            <div>
+                                <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-1">Everyday</p>
+                                <p className="text-black font-serif italic text-lg">08:00 — 20:00</p>
                             </div>
                         </div>
 
                         <div className="flex gap-8 pt-8">
-                            <a href="https://www.instagram.com/butcherandsauce?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-black/5 flex items-center justify-center text-zinc-400 hover:text-gold hover:border-gold transition-all duration-300">
+                            <a href="https://www.instagram.com/butcherandsauce?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-black/5 flex items-center justify-center text-zinc-400 hover:text-ruby hover:border-ruby transition-all duration-300">
                                 <Instagram size={18} />
                             </a>
                         </div>
@@ -108,7 +102,7 @@ export default function ContactPage() {
                                     <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Full Name</label>
                                     <input
                                         type="text"
-                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-colors font-serif"
+                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-colors font-serif"
                                         placeholder="E.g. Adrian Saitoti"
                                     />
                                 </div>
@@ -116,7 +110,7 @@ export default function ContactPage() {
                                     <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Email Address</label>
                                     <input
                                         type="email"
-                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-colors font-serif"
+                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-colors font-serif"
                                         placeholder="concierge@example.com"
                                     />
                                 </div>
@@ -124,7 +118,7 @@ export default function ContactPage() {
 
                             <div className="space-y-2">
                                 <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Subject of Inquiry</label>
-                                <select className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-colors font-serif appearance-none">
+                                <select className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-colors font-serif appearance-none">
                                     <option>Personal Order</option>
                                     <option>Special Occasion / Catering</option>
                                     <option>Wholesale Inquiry</option>
@@ -136,12 +130,12 @@ export default function ContactPage() {
                                 <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Message</label>
                                 <textarea
                                     rows={6}
-                                    className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-colors font-serif resize-none"
+                                    className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-colors font-serif resize-none"
                                     placeholder="Tell us about your requirements..."
                                 />
                             </div>
 
-                            <button className="w-full py-6 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3">
+                            <button className="w-full py-6 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3">
                                 <Send size={14} />
                                 Send Inquiry
                             </button>

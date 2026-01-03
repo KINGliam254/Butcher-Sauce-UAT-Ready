@@ -23,13 +23,13 @@ export default async function Home() {
       <section className="section-padding max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div className="max-w-xl">
-            <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-medium mb-4 block">Selection</span>
+            <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-medium mb-4 block">Selection</span>
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-black leading-tight">
               Featured Prime Cuts <br />
               <span className="italic font-light text-zinc-500">Direct From The Butcher.</span>
             </h2>
           </div>
-          <button className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 hover:text-gold transition-colors pb-2 border-b border-zinc-100 hover:border-gold">
+          <button className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 hover:text-ruby transition-colors pb-2 border-b border-zinc-100 hover:border-ruby">
             View Seasonal Collection
           </button>
         </div>
@@ -50,18 +50,18 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
           <div className="relative aspect-square md:aspect-[4/5] overflow-hidden rounded-sm shadow-2xl">
             <div
-              className="absolute inset-0 bg-cover bg-center grayscale opacity-80"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1547496502-affa22d38842?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')" }}
+              className="absolute inset-0 bg-cover bg-center opacity-80"
+              style={{ backgroundImage: "url('/heritage-standard.jpg')" }}
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-white/90 to-transparent" />
             <div className="absolute bottom-12 left-12">
-              <span className="text-gold text-6xl font-serif italic">1984</span>
+              <span className="text-ruby text-6xl font-serif italic">1999</span>
               <p className="text-xs uppercase tracking-widest text-zinc-500 mt-2 font-bold">Established Tradition</p>
             </div>
           </div>
 
           <div className="space-y-8">
-            <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-medium block">Our Heritage</span>
+            <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-medium block">Our Heritage</span>
             <h2 className="text-4xl md:text-6xl font-serif font-bold text-black leading-tight">
               A Legacy of <br />
               <span className="italic font-light text-zinc-400 font-serif">Purity & Precision.</span>
@@ -84,45 +84,74 @@ export default async function Home() {
       </section>
 
       {/* Footer Placeholder for completeness */}
-      <footer className="py-24 border-t border-black/5 bg-white">
-        <div className="max-w-7xl mx-auto px-6 text-center space-y-12">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-3xl font-serif font-bold tracking-widest uppercase text-black">
-              Butcher <span className="text-gold">&</span> Sauce
-            </h2>
-            <p className="text-[10px] tracking-[0.4em] uppercase text-zinc-400 font-bold">The Artisanal Standard</p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-12">
-            {[
-              { name: "Instagram", href: "https://www.instagram.com/butcherandsauce?igsh=NTc4MTIwNjQ2YQ==" },
-              { name: "Contact", href: "/contact" },
-            ].map(social => (
-              <Link
-                key={social.name}
-                href={social.href}
-                className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 hover:text-gold transition-colors font-bold"
-              >
-                {social.name}
-              </Link>
-            ))}
-          </div>
-
-          <div className="pt-12 border-t border-black/5 flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div className="space-y-4">
-              <div className="relative w-24 aspect-square mb-6 opacity-80 hover:opacity-100 transition-opacity">
+      <footer className="py-24 border-t border-black/5 bg-white overflow-hidden relative">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+            {/* Branding Column */}
+            <div className="space-y-8">
+              <div className="relative w-20 h-20 grayscale opacity-80 hover:opacity-100 transition-opacity">
                 <Image
                   src="/logo.png"
                   alt="Butcher & Sauce"
                   fill
-                  className="object-contain grayscale"
+                  className="object-contain"
                 />
               </div>
               <div>
-                <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold mb-2">Nyama Since 1999</p>
-                <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold">© 2026 Butcher & Sauce. All Rights Reserved.</p>
+                <h2 className="text-2xl font-serif font-bold tracking-widest uppercase text-black mb-2">
+                  Butcher <span className="text-ruby">&</span> Sauce
+                </h2>
+                <p className="text-[10px] tracking-[0.4em] uppercase text-zinc-400 font-bold">The Artisanal Mission</p>
               </div>
             </div>
+
+            {/* Quick Links */}
+            <div className="space-y-8">
+              <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-black border-b border-black/5 pb-4">Curation</h4>
+              <div className="flex flex-col gap-4">
+                {[
+                  { name: "Prime Cuts", href: "/prime-cuts" },
+                  { name: "Sauces & Marinades", href: "/artisanal-sauces" },
+                  { name: "Collectibles", href: "/collectibles" },
+                  { name: "The Butchery", href: "/the-butchery" },
+                ].map(link => (
+                  <Link key={link.name} href={link.href} className="text-[10px] uppercase tracking-widest text-zinc-400 hover:text-ruby transition-colors font-bold">
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Support */}
+            <div className="space-y-8">
+              <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-black border-b border-black/5 pb-4">Assistance</h4>
+              <div className="flex flex-col gap-4">
+                {[
+                  { name: "Contact Hub", href: "/contact" },
+                  { name: "Corporate Sales", href: "/corporate" },
+                  { name: "Instagram", href: "https://www.instagram.com/butcherandsauce?igsh=NTc4MTIwNjQ2YQ==" },
+                ].map(link => (
+                  <Link key={link.name} href={link.href} className="text-[10px] uppercase tracking-widest text-zinc-400 hover:text-ruby transition-colors font-bold">
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Contact Info */}
+            <div className="space-y-8">
+              <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-black border-b border-black/5 pb-4">Coordinates</h4>
+              <div className="space-y-2 text-[10px] tracking-widest text-zinc-400 uppercase font-bold leading-relaxed">
+                <p>Nairobi, Kenya</p>
+                <p>Artisanal Preparation Center</p>
+                <p className="text-zinc-600 mt-4">Est. 1999</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-12 border-t border-black/5 flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold italic">Honoring the Standard since 1999</p>
+            <p className="text-[10px] tracking-widest text-zinc-400 uppercase font-bold">© 2026 Butcher & Sauce. All Rights Reserved.</p>
           </div>
         </div>
       </footer>

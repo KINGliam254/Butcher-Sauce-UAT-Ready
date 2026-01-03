@@ -24,7 +24,7 @@ export default function PrimeCutsClientWrapper({ initialProducts }: PrimeCutsCli
                     <motion.span
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block"
+                        className="text-ruby text-[10px] uppercase tracking-[0.4em] font-bold mb-4 block"
                     >
                         The Collection
                     </motion.span>
@@ -52,14 +52,14 @@ export default function PrimeCutsClientWrapper({ initialProducts }: PrimeCutsCli
                         <button
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
-                            className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 relative pb-2 whitespace-nowrap ${activeCategory === cat ? "text-gold" : "text-zinc-400 hover:text-black"
+                            className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 relative pb-2 whitespace-nowrap ${activeCategory === cat ? "text-ruby" : "text-zinc-400 hover:text-black"
                                 }`}
                         >
                             {cat}
                             {activeCategory === cat && (
                                 <motion.div
                                     layoutId="activeFilter"
-                                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold"
+                                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-ruby"
                                 />
                             )}
                         </button>

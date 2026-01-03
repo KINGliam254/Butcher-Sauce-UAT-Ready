@@ -4,8 +4,8 @@
 :root {
   --background: #FFFFFF;
   --foreground: #121212;
-  --accent: #D4AF37;
-  --accent-muted: #B59451;
+  --accent: #9F1239; /* Premium Ruby Red */
+  --accent-muted: #881337;
   --card-bg: #F9F9F9;
   --card-border: #EEEEEE;
   --neutral-soft: #F5F5F3;
@@ -16,6 +16,8 @@
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-accent-muted: var(--accent-muted);
+  --color-ruby: var(--accent);
+  --color-gold: var(--accent);
   --color-card: var(--card-bg);
   --color-card-border: var(--card-border);
   --color-neutral-soft: var(--neutral-soft);
@@ -41,15 +43,15 @@ h6 {
   font-family: var(--font-serif);
 }
 
-.text-gold {
+.text-gold, .text-ruby {
   color: var(--accent);
 }
 
-.bg-gold {
+.bg-gold, .bg-ruby {
   background-color: var(--accent);
 }
 
-.border-gold {
+.border-gold, .border-ruby {
   border-color: var(--accent);
 }
 

@@ -22,51 +22,13 @@ const INITIAL_MESSAGE: Message = {
     options: ["Recommend a Cut", "Sourcing & Aging", "Pairing Suggestions", "Care Instructions", "Message on WhatsApp"]
 };
 
-const KNOWLEDGE_BASE: Record<string, { response: string, options?: string[] }> = {
-    "Recommend a Cut": {
-        response: "To give you the best recommendation, what is the occasion? Are you looking for a slow-cook masterpiece, a quick premium sear, or something for a large gathering?",
-        options: ["Quick Premium Sear", "Slow-Cook Masterpiece", "Large Gathering", "Back"]
-    },
-    "Quick Premium Sear": {
-        response: "For a high-heat sear, I highly recommend our Wagyu Sirloin (Grade A5) or the Dry-Aged Ribeye. Would you like to see these selections?",
-        options: ["Show Ribeye", "Show Wagyu", "Back"]
-    },
-    "Slow-Cook Masterpiece": {
-        response: "For slow cooking, nothing beats our Short Ribs or the Brisket. They develop incredible depth when braised. Should I show you our signature Brisket?",
-        options: ["Show Brisket", "Back"]
-    },
-    "Large Gathering": {
-        response: "For crowds, a Whole Poussin or a large T-Bone works wonders. It makes for an impressive center-piece. Would you like to view our T-Bone collection?",
-        options: ["Show T-Bone", "Back"]
-    },
-    "Sourcing & Aging": {
-        response: "Our beef is exclusively sourced from the high plains of Laikipia and the Rift Valley. We dry-age our Signature Reserve for 30-45 days in custom salt-brick rooms to concentrate flavor and maximize tenderness.",
-        options: ["Our Ranched Partners", "Aging Process Details", "Back"]
-    },
-    "Pairing Suggestions": {
-        response: "A great cut deserves a great companion. Our Chimichurri Verde works beautifully with lean cuts like Sirloin, while our Signature Pepper Sauce is built for the rich marbling of a Ribeye.",
-        options: ["Sauce Pairings", "Drink Pairings", "Back"]
-    },
-    "Care Instructions": {
-        response: "Always temper your meat to room temperature before cooking. Post-cook rest is vital—rest your steak for at least 5-8 minutes to allow juices to redistribute. Never cut immediately!",
-        options: ["Thawing Guide", "Resting Times", "Back"]
-    },
-    "Message on WhatsApp": {
-        response: "Connecting you to our master butcher on WhatsApp for personalized service...",
-        options: ["Back"]
-    },
-    "Back": {
-        response: "How else can I assist you in your artisanal journey?",
-        options: ["Recommend a Cut", "Sourcing & Aging", "Pairing Suggestions", "Care Instructions", "Message on WhatsApp"]
-    }
-};
-
 export default function Chatbot() {
-    const { isCartOpen } = useCart();
+    const { isCartOpen, addItem } = useCart();
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
     const [inputValue, setInputValue] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -75,7 +37,7 @@ export default function Chatbot() {
 
     useEffect(() => {
         if (isOpen) scrollToBottom();
-    }, [messages, isOpen]);
+    }, [messages, isOpen, isLoading]);
 
     // Close chatbot if cart opens
     useEffect(() => {
@@ -85,11 +47,12 @@ export default function Chatbot() {
     // Hide if in admin or cart open
     if (isCartOpen || pathname?.startsWith('/admin')) return null;
 
-    const handleSend = (text: string) => {
-        if (!text.trim()) return;
+    const handleSend = async (text: string) => {
+        if (!text.trim() || isLoading) return;
 
         if (text === "Message on WhatsApp") {
             window.open("https://wa.me/254795999555", "_blank");
+            return;
         }
 
         const newUserMessage: Message = {
@@ -99,26 +62,86 @@ export default function Chatbot() {
             timestamp: new Date()
         };
 
-        setMessages(prev => [...prev, newUserMessage]);
+        const updatedMessages = [...messages, newUserMessage];
+        setMessages(updatedMessages);
         setInputValue("");
+        setIsLoading(true);
 
-        // Simulate Bot thinking
-        setTimeout(() => {
-            const knowledge = KNOWLEDGE_BASE[text] || {
-                response: "That's an excellent question. While I'm still learning the finer points of every cut, I'd recommend speaking with our head butcher directly, or I can help you with recommendations.",
-                options: ["Recommend a Cut", "Back"]
-            };
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: updatedMessages.map(m => ({ text: m.text, sender: m.sender })),
+                    pageInfo: { pathname }
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.error) throw new Error(data.error);
+
+            let cleanText = data.text;
+
+            // --- ORDER PARSING LOGIC ---
+            const orderRegex = /\[ORDER:\s*({[\s\S]*?})\]/;
+            const match = cleanText.match(orderRegex);
+
+            if (match) {
+                try {
+                    const orderData = JSON.parse(match[1]);
+
+                    // Financial Safety: Sanitize numeric fields
+                    const rawPrice = Number(orderData.numericPrice);
+                    const quantity = Number(orderData.quantity) || 1;
+
+                    // Defense: If numericPrice is suspiciously low (like 1 or 0), 
+                    // and the price string has a better number (e.g. "Ksh 1,050"),
+                    // we could try to parse the string, but better to trust the context fix.
+                    // For now, let's just ensure it's a number.
+                    const finalNumericPrice = isNaN(rawPrice) || rawPrice <= 0 ? 0 : rawPrice;
+
+                    addItem({
+                        slug: orderData.slug,
+                        name: orderData.name,
+                        price: orderData.price,
+                        numericPrice: finalNumericPrice,
+                        category: orderData.category,
+                        image: orderData.image || "",
+                        quantity: quantity,
+                        doneness: orderData.doneness,
+                        preparation: orderData.preparation
+                    });
+
+                    // Strip the command from the displayed text
+                    cleanText = cleanText.replace(orderRegex, "").trim();
+                } catch (e) {
+                    console.error("Failed to parse order command:", e);
+                }
+            }
+            // ---------------------------
 
             const botResponse: Message = {
                 id: (Date.now() + 1).toString(),
-                text: knowledge.response,
+                text: cleanText,
                 sender: "bot",
-                timestamp: new Date(),
-                options: knowledge.options
+                timestamp: new Date()
             };
 
             setMessages(prev => [...prev, botResponse]);
-        }, 600);
+        } catch (error) {
+            console.error("Chatbot Error:", error);
+            const errorResponse: Message = {
+                id: (Date.now() + 1).toString(),
+                text: "My apologies, I seem to have lost connection to the cellar. Please try again or message our master butcher on WhatsApp.",
+                sender: "bot",
+                timestamp: new Date(),
+                options: ["Message on WhatsApp"]
+            };
+            setMessages(prev => [...prev, errorResponse]);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -153,8 +176,8 @@ export default function Chatbot() {
                         {/* Header */}
                         <div className="bg-black p-6 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center">
-                                    <Bot className="text-gold" size={20} />
+                                <div className="w-10 h-10 rounded-full bg-ruby/10 border border-ruby/20 flex items-center justify-center">
+                                    <Bot className="text-ruby" size={20} />
                                 </div>
                                 <div>
                                     <h3 className="text-white text-xs font-serif font-bold tracking-widest uppercase">Artisanal Assistant</h3>
@@ -186,7 +209,7 @@ export default function Chatbot() {
                                                 <button
                                                     key={opt}
                                                     onClick={() => handleSend(opt)}
-                                                    className="text-[9px] uppercase tracking-widest font-bold px-3 py-2 bg-white border border-black/10 text-zinc-500 hover:border-gold hover:text-gold transition-all rounded-sm flex items-center gap-2"
+                                                    className="text-[9px] uppercase tracking-widest font-bold px-3 py-2 bg-white border border-black/10 text-zinc-500 hover:border-ruby hover:text-ruby transition-all rounded-sm flex items-center gap-2"
                                                 >
                                                     {opt === "Message on WhatsApp" && <span className="w-1.5 h-1.5 rounded-full bg-[#25D366]" />}
                                                     {opt}
@@ -196,6 +219,27 @@ export default function Chatbot() {
                                     )}
                                 </div>
                             ))}
+                            {isLoading && (
+                                <div className="flex flex-col items-start space-y-2 animate-in fade-in duration-300">
+                                    <div className="bg-white border border-black/5 p-4 rounded-sm shadow-sm flex gap-1">
+                                        <motion.span
+                                            animate={{ opacity: [0.3, 1, 0.3] }}
+                                            transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
+                                            className="w-1 h-1 bg-ruby rounded-full"
+                                        />
+                                        <motion.span
+                                            animate={{ opacity: [0.3, 1, 0.3] }}
+                                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+                                            className="w-1 h-1 bg-ruby rounded-full"
+                                        />
+                                        <motion.span
+                                            animate={{ opacity: [0.3, 1, 0.3] }}
+                                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }}
+                                            className="w-1 h-1 bg-ruby rounded-full"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                             <div ref={messagesEndRef} />
                         </div>
 
@@ -211,19 +255,19 @@ export default function Chatbot() {
                                 <input
                                     type="text"
                                     placeholder="Ask about our cuts, aging, or pairings..."
-                                    className="w-full pl-4 pr-12 py-4 bg-neutral-soft/50 border border-transparent rounded-sm text-xs focus:outline-none focus:border-gold/30 transition-all font-light"
+                                    className="w-full pl-4 pr-12 py-4 bg-neutral-soft/50 border border-transparent rounded-sm text-xs focus:outline-none focus:border-ruby/30 transition-all font-light"
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
                                 />
                                 <button
                                     type="submit"
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gold hover:text-black transition-colors"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-ruby hover:text-black transition-colors"
                                 >
                                     <Send size={18} />
                                 </button>
                             </form>
                             <p className="text-[8px] text-center text-zinc-400 mt-3 uppercase tracking-widest font-bold flex items-center justify-center gap-1.5">
-                                <ShieldCheck size={10} className="text-gold" /> Secure & Hand-Forged Intelligence
+                                <ShieldCheck size={10} className="text-ruby" /> Secure & Hand-Forged Intelligence
                             </p>
                         </div>
                     </motion.div>
@@ -235,9 +279,9 @@ export default function Chatbot() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-16 h-16 bg-black text-gold rounded-full shadow-2xl flex items-center justify-center relative overflow-hidden group border border-white/10"
+                className="w-16 h-16 bg-black text-ruby rounded-full shadow-2xl flex items-center justify-center relative overflow-hidden group border border-white/10"
             >
-                <div className="absolute inset-0 bg-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-ruby translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                 <div className="relative z-10">
                     <AnimatePresence mode="wait">
                         {isOpen ? (
@@ -268,7 +312,7 @@ export default function Chatbot() {
                     <motion.span
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute -top-1 -right-1 w-4 h-4 bg-gold border-2 border-black rounded-full"
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-ruby border-2 border-black rounded-full"
                     />
                 )}
             </motion.button>

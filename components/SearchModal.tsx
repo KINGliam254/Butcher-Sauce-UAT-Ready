@@ -37,7 +37,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         .from('products')
                         .select('*')
                         .or(`name.ilike.%${query}%,category.ilike.%${query}%`)
-                        .limit(6);
+                        .limit(10);
 
                     setResults(data || []);
                 } catch (error) {
@@ -104,7 +104,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             />
                             {isLoading && (
                                 <div className="absolute right-0 bottom-6">
-                                    <Loader2 size={24} className="text-gold animate-spin" />
+                                    <Loader2 size={24} className="text-ruby animate-spin" />
                                 </div>
                             )}
                         </div>
@@ -130,8 +130,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                     />
                                                 </div>
                                                 <div className="flex-1 space-y-1">
-                                                    <span className="text-[9px] uppercase tracking-widest text-gold font-bold">{product.category}</span>
-                                                    <h3 className="text-xl font-serif font-bold text-black group-hover:text-gold transition-colors">{product.name}</h3>
+                                                    <span className="text-[9px] uppercase tracking-widest text-ruby font-bold">{product.category}</span>
+                                                    <h3 className="text-xl font-serif font-bold text-black group-hover:text-ruby transition-colors">{product.name}</h3>
                                                     <div className="flex items-center gap-2 text-zinc-400">
                                                         <span className="text-sm font-medium">{product.price_display}</span>
                                                         <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
@@ -151,7 +151,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                     <div>
                                         <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 font-bold mb-8">Popular Categories</h4>
                                         <div className="flex flex-wrap gap-4">
-                                            {["Signature Reserve", "Mountain Range", "Artisanal Sauces", "Master Tools", "Drinks"].map((cat) => (
+                                            {["Beef", "Signature Reserve", "Lamb", "Sauces & Marinades", "Master Tools", "Drinks"].map((cat) => (
                                                 <button
                                                     key={cat}
                                                     onClick={() => setQuery(cat)}

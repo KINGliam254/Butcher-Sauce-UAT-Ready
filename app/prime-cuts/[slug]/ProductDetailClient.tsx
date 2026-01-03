@@ -74,15 +74,15 @@ export default function ProductDetailClient({ product }: { product: any }) {
                             animate={{ opacity: 1, x: 0 }}
                             className="space-y-4"
                         >
-                            <span className="text-gold text-[10px] uppercase tracking-[0.4em] font-bold">{product.category}</span>
+                            <span className="text-ruby text-[10px] uppercase tracking-[0.4em] font-bold">{product.category}</span>
                             <h1 className="text-4xl md:text-6xl font-serif font-bold text-black leading-tight">{product.name}</h1>
 
                             <div className="flex items-center gap-6">
                                 {product.is_on_sale ? (
                                     <>
                                         <p className="text-3xl md:text-4xl font-serif text-black font-bold">Ksh {product.sale_price?.toLocaleString()}</p>
-                                        <p className="text-lg md:text-xl font-serif text-zinc-300 italic line-through decoration-gold/30">{product.price_display}</p>
-                                        <span className="bg-gold text-black text-[9px] font-bold px-3 py-1 uppercase tracking-widest">Limited Offer</span>
+                                        <p className="text-lg md:text-xl font-serif text-zinc-300 italic line-through decoration-ruby/30">{product.price_display}</p>
+                                        <span className="bg-ruby text-black text-[9px] font-bold px-3 py-1 uppercase tracking-widest">Limited Offer</span>
                                     </>
                                 ) : (
                                     <p className="text-2xl font-serif text-zinc-400 italic">{product.price_display}</p>
@@ -142,7 +142,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
                                                         key={level}
                                                         onClick={() => setDoneness(level)}
                                                         className={`px-4 py-2 text-[10px] uppercase tracking-widest font-bold transition-all duration-300 rounded-sm border ${doneness === level
-                                                            ? "bg-gold text-black border-gold"
+                                                            ? "bg-ruby text-black border-ruby"
                                                             : "bg-transparent text-zinc-400 border-black/10 hover:border-black/30"
                                                             }`}
                                                     >
@@ -207,7 +207,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
 
                             <button
                                 onClick={handleAddToBag}
-                                className="flex-1 w-full sm:w-auto px-10 py-5 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3 group"
+                                className="flex-1 w-full sm:w-auto px-10 py-5 bg-black text-white uppercase text-[10px] tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl flex items-center justify-center gap-3 group"
                             >
                                 <ShoppingBag size={14} className="group-hover:-translate-y-1 transition-transform" />
                                 Add to Butcher's Bag
@@ -222,15 +222,15 @@ export default function ProductDetailClient({ product }: { product: any }) {
                             className="flex flex-wrap gap-8 pt-4"
                         >
                             <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
-                                <Truck size={14} className="text-gold" />
+                                <Truck size={14} className="text-ruby" />
                                 Same day delivery
                             </div>
                             <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
-                                <ShieldCheck size={14} className="text-gold" />
+                                <ShieldCheck size={14} className="text-ruby" />
                                 Ethical Sourcing
                             </div>
                             <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
-                                <Star size={14} className="text-gold" />
+                                <Star size={14} className="text-ruby" />
                                 Premium Grade
                             </div>
                         </motion.div>

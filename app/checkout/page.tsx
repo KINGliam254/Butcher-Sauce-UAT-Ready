@@ -16,9 +16,6 @@ export default function CheckoutPage() {
     const [isProcessing, setIsProcessing] = useState(false);
     const router = useRouter();
 
-    const deliveryFee = fulfillmentMethod === "delivery" ? 350 : 0;
-    const total = subtotal + deliveryFee;
-
     // Form States
     const [deliveryInfo, setDeliveryInfo] = useState({
         name: "",
@@ -35,9 +32,13 @@ export default function CheckoutPage() {
         mpesaNumber: "",
         mpesaTransactionId: "",
         cardNumber: "",
+        cardType: "unknown" as "visa" | "mastercard" | "unknown",
         expiry: "",
         cvv: ""
     });
+
+    const deliveryFee = fulfillmentMethod === "delivery" ? 350 : 0;
+    const total = subtotal + deliveryFee;
 
     const pickupLocations = [
         "OiLibya South B (Partner)",
@@ -242,7 +243,7 @@ export default function CheckoutPage() {
 
                                     <button
                                         onClick={handleNext}
-                                        className="w-full md:w-auto px-12 py-5 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-gold hover:text-black transition-all duration-500 rounded-sm shadow-xl"
+                                        className="w-full md:w-auto px-12 py-5 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-ruby hover:text-black transition-all duration-500 rounded-sm shadow-xl"
                                     >
                                         Proceed to Payment
                                     </button>
@@ -317,7 +318,7 @@ export default function CheckoutPage() {
                                                             <p className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold">M-Pesa Number</p>
                                                             <input
                                                                 type="tel"
-                                                                className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-all font-serif"
+                                                                className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all font-serif"
                                                                 placeholder="07XX XXX XXX"
                                                                 value={paymentDetails.mpesaNumber}
                                                                 onChange={(e) => setPaymentDetails({ ...paymentDetails, mpesaNumber: e.target.value })}
@@ -327,7 +328,7 @@ export default function CheckoutPage() {
                                                             <p className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold">Transaction ID</p>
                                                             <input
                                                                 type="text"
-                                                                className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-all font-serif uppercase"
+                                                                className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all font-serif uppercase"
                                                                 placeholder="SKX8..."
                                                                 value={paymentDetails.mpesaTransactionId}
                                                                 onChange={(e) => setPaymentDetails({ ...paymentDetails, mpesaTransactionId: e.target.value })}
@@ -347,35 +348,60 @@ export default function CheckoutPage() {
                                                 exit={{ opacity: 0, y: -10 }}
                                                 className="p-8 bg-neutral-soft rounded-sm space-y-6"
                                             >
-                                                <div className="space-y-4">
+                                                <div className="flex justify-between items-center">
                                                     <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Card Details</p>
+                                                    <div className="flex gap-2">
+                                                        <div className={`px-2 py-1 rounded-xs border text-[8px] font-bold tracking-tighter transition-all ${paymentDetails.cardType === 'visa' ? 'bg-blue-600 border-blue-600 text-white shadow-lg scale-110' : 'bg-white border-zinc-200 text-zinc-300'}`}>VISA</div>
+                                                        <div className={`px-2 py-1 rounded-xs border text-[8px] font-bold tracking-tighter transition-all ${paymentDetails.cardType === 'mastercard' ? 'bg-orange-600 border-orange-600 text-white shadow-lg scale-110' : 'bg-white border-zinc-200 text-zinc-300'}`}>MASTERCARD</div>
+                                                    </div>
+                                                </div>
+                                                <div className="relative">
                                                     <input
                                                         type="text"
-                                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-all font-serif"
+                                                        className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all font-serif tracking-widest"
                                                         placeholder="XXXX XXXX XXXX XXXX"
                                                         value={paymentDetails.cardNumber}
-                                                        onChange={(e) => setPaymentDetails({ ...paymentDetails, cardNumber: e.target.value })}
+                                                        onChange={(e) => {
+                                                            const val = e.target.value.replace(/\D/g, '').substring(0, 16);
+                                                            const formatted = val.replace(/(\d{4})(?=\d)/g, '$1 ');
+                                                            let type: "visa" | "mastercard" | "unknown" = "unknown";
+                                                            if (val.startsWith('4')) type = 'visa';
+                                                            else if (val.startsWith('5')) type = 'mastercard';
+
+                                                            setPaymentDetails({ ...paymentDetails, cardNumber: formatted, cardType: type });
+                                                        }}
                                                     />
+                                                    <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                                                        {paymentDetails.cardType === 'visa' && <span className="text-blue-600 font-bold italic text-xs">VISA</span>}
+                                                        {paymentDetails.cardType === 'mastercard' && <span className="text-orange-600 font-bold italic text-xs">M/C</span>}
+                                                    </div>
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-4">
                                                     <div className="space-y-2">
                                                         <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Expiry</label>
                                                         <input
                                                             type="text"
-                                                            className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-all font-serif"
+                                                            className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all font-serif"
                                                             placeholder="MM/YY"
                                                             value={paymentDetails.expiry}
-                                                            onChange={(e) => setPaymentDetails({ ...paymentDetails, expiry: e.target.value })}
+                                                            onChange={(e) => {
+                                                                let val = e.target.value.replace(/\D/g, '').substring(0, 4);
+                                                                if (val.length >= 3) {
+                                                                    val = val.substring(0, 2) + '/' + val.substring(2);
+                                                                }
+                                                                setPaymentDetails({ ...paymentDetails, expiry: val });
+                                                            }}
                                                         />
                                                     </div>
                                                     <div className="space-y-2">
                                                         <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">CVV</label>
                                                         <input
-                                                            type="text"
-                                                            className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-gold transition-all font-serif"
+                                                            type="password"
+                                                            maxLength={3}
+                                                            className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all font-serif"
                                                             placeholder="***"
                                                             value={paymentDetails.cvv}
-                                                            onChange={(e) => setPaymentDetails({ ...paymentDetails, cvv: e.target.value })}
+                                                            onChange={(e) => setPaymentDetails({ ...paymentDetails, cvv: e.target.value.replace(/\D/g, '') })}
                                                         />
                                                     </div>
                                                 </div>
@@ -429,7 +455,7 @@ export default function CheckoutPage() {
                                     <div className="bg-neutral-soft p-10 rounded-sm space-y-8">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                                             <div className="space-y-4">
-                                                <p className="text-[10px] uppercase tracking-widest text-gold font-bold">{fulfillmentMethod === "delivery" ? "Delivery To" : "Pickup From"}</p>
+                                                <p className="text-[10px] uppercase tracking-widest text-ruby font-bold">{fulfillmentMethod === "delivery" ? "Delivery To" : "Pickup From"}</p>
                                                 <div>
                                                     <p className="text-black font-serif italic text-lg">{deliveryInfo.name}</p>
                                                     <p className="text-zinc-500 text-sm font-light mt-1">
@@ -439,11 +465,12 @@ export default function CheckoutPage() {
                                                 </div>
                                             </div>
                                             <div className="space-y-4">
-                                                <p className="text-[10px] uppercase tracking-widest text-gold font-bold">Payment Method</p>
-                                                <div className="flex items-center gap-3">
-                                                    <CreditCard size={18} className="text-black" />
-                                                    <p className="text-black font-serif italic text-lg capitalize">{paymentMethod}</p>
-                                                </div>
+                                                <CreditCard size={18} className="text-black" />
+                                                <p className="text-black font-serif italic text-lg capitalize">
+                                                    {paymentMethod === 'card'
+                                                        ? (paymentDetails.cardType === 'unknown' ? 'Credit Card' : paymentDetails.cardType)
+                                                        : paymentMethod}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -459,9 +486,9 @@ export default function CheckoutPage() {
                                                     <motion.div
                                                         animate={{ scale: [1, 1.2, 1] }}
                                                         transition={{ repeat: Infinity, duration: 2 }}
-                                                        className="absolute inset-0 border-2 border-gold rounded-full"
+                                                        className="absolute inset-0 border-2 border-ruby rounded-full"
                                                     />
-                                                    <ShieldCheck className="text-gold" size={32} />
+                                                    <ShieldCheck className="text-ruby" size={32} />
                                                 </div>
                                                 <div className="space-y-3">
                                                     <h3 className="text-2xl font-serif font-bold">Processing Order...</h3>
@@ -509,10 +536,32 @@ export default function CheckoutPage() {
                                 {cart.map((item, idx) => (
                                     <div key={`${item.slug}-${idx}`} className="flex gap-4">
                                         <div className="relative w-16 aspect-[4/5] bg-white rounded-sm overflow-hidden shrink-0">
-                                            <Image src={item.image} alt={item.name} fill className="object-cover grayscale" />
+                                            {(() => {
+                                                let isValid = false;
+                                                if (item.image && typeof item.image === 'string') {
+                                                    try {
+                                                        if (item.image.startsWith('/')) {
+                                                            isValid = true;
+                                                        } else {
+                                                            new URL(item.image);
+                                                            isValid = true;
+                                                        }
+                                                    } catch (e) {
+                                                        isValid = false;
+                                                    }
+                                                }
+
+                                                return isValid ? (
+                                                    <Image src={item.image} alt={item.name} fill className="object-cover grayscale" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center bg-zinc-100">
+                                                        <ShoppingBag size={16} className="text-zinc-300" />
+                                                    </div>
+                                                );
+                                            })()}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-[9px] uppercase tracking-widest text-gold font-bold">{item.category}</p>
+                                            <p className="text-[9px] uppercase tracking-widest text-ruby font-bold">{item.category}</p>
                                             <h3 className="text-xs font-serif font-bold text-black truncate">{item.name}</h3>
                                             <p className="text-[10px] text-zinc-400 mt-1">{item.quantity}x {item.price}</p>
                                         </div>
@@ -531,20 +580,20 @@ export default function CheckoutPage() {
                                 </div>
                                 <div className="flex justify-between items-center text-lg pt-4">
                                     <span className="font-serif font-bold">Total</span>
-                                    <span className="font-serif font-bold text-black underline underline-offset-8 decoration-gold/30">
+                                    <span className="font-serif font-bold text-black underline underline-offset-8 decoration-ruby/30">
                                         Ksh {total.toLocaleString()}
                                     </span>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-3 p-4 bg-white/50 rounded-sm">
-                                <ShieldCheck size={16} className="text-gold" />
+                                <ShieldCheck size={16} className="text-ruby" />
                                 <p className="text-[8px] uppercase tracking-widest text-zinc-400 font-bold">Encrypted Secure Transaction</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
