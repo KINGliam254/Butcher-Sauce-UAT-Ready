@@ -9,12 +9,15 @@ export async function POST(request: Request) {
         const supabase = createClient(cookieStore)
         const body = await request.json()
         const { customer, items, payment, total } = body
+        console.log(`>>> [ORDER-API] Received order request: ${customer.email} - Total: ${total}`);
 
         // 1. Initiate Payment if M-Pesa
         let mpesaData = null;
         if (payment.method === 'mpesa') {
+            console.log(`>>> [ORDER-API] Initiating M-Pesa STK Push...`);
             const { initiateSTKPush } = await import('@/utils/mpesa');
             mpesaData = await initiateSTKPush(customer.phone, total);
+            console.log(`>>> [ORDER-API] M-Pesa Response: ${JSON.stringify(mpesaData)}`);
         }
 
         // 2. Insert Order
@@ -37,7 +40,11 @@ export async function POST(request: Request) {
             .select()
             .single()
 
-        if (orderError) throw orderError
+        if (orderError) {
+            console.error('>>> [ORDER-API] Supabase Order Error:', orderError);
+            throw orderError;
+        }
+        console.log(`>>> [ORDER-API] Order record created: ${order.id}`);
 
         // 2. Insert Order Items
         const orderItems = items.map((item: any) => ({
@@ -54,7 +61,11 @@ export async function POST(request: Request) {
             .from('order_items')
             .insert(orderItems)
 
-        if (itemsError) throw itemsError
+        if (itemsError) {
+            console.error('>>> [ORDER-API] Supabase Order Items Error:', itemsError);
+            throw itemsError;
+        }
+        console.log(`>>> [ORDER-API] Order items created successfully`);
 
         // 3. Send Telegram Notification
         const orderUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://butcher-sauce-uat.vercel.app'}/admin/orders/${order.id}`;
@@ -70,11 +81,13 @@ export async function POST(request: Request) {
 <a href="${orderUrl}">View Order in Admin Portal</a>
         `.trim();
 
+        console.log(`>>> [ORDER-API] Sending Telegram notification...`);
         await sendTelegramMessage(message);
+        console.log(`>>> [ORDER-API] Telegram notification sent`);
 
         return NextResponse.json({ success: true, orderId: order.id })
     } catch (error: any) {
-        console.error('Order Submission Error:', error)
+        console.error('>>> [ORDER-API] CRITICAL ERROR:', error)
         return NextResponse.json(
             { success: false, error: error.message },
             { status: 500 }
