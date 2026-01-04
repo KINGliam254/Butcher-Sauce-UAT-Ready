@@ -13,7 +13,6 @@ export async function POST(request: Request) {
             const token = await signToken({ role: "admin", authenticated: true });
             const cookieStore = await cookies();
 
-            console.log(`>>> [LOGIN-API] Setting signed JWT cookie: butcher-admin-session`);
             cookieStore.set("butcher-admin-session", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
