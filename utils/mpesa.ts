@@ -11,31 +11,44 @@ async function getAccessToken(): Promise<string> {
     const consumerSecret = process.env.MPESA_CONSUMER_SECRET;
     const environment = process.env.MPESA_ENVIRONMENT || 'sandbox';
 
+    if (!consumerKey || !consumerSecret) {
+        throw new Error(`Missing M-Pesa credentials: ${!consumerKey ? 'MPESA_CONSUMER_KEY ' : ''}${!consumerSecret ? 'MPESA_CONSUMER_SECRET' : ''}. Please check your .env.local or Vercel settings.`);
+    }
+
     const url = environment === 'live'
         ? 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
         : 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
     const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
 
-    const response = await fetch(url, {
-        headers: {
-            Authorization: `Basic ${auth}`,
-        },
-    });
+    console.log(`>>> [MPESA-TOKEN] Requesting from: ${url}`);
 
-    const text = await response.text();
-    let data;
     try {
-        data = JSON.parse(text);
-    } catch (e) {
-        throw new Error(`Invalid M-Pesa Token response: ${text || 'Empty'}`);
-    }
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Basic ${auth}`,
+            },
+        });
 
-    if (!response.ok) {
-        throw new Error(data.errorMessage || 'Failed to get M-Pesa access token');
-    }
+        console.log(`>>> [MPESA-TOKEN] Status: ${response.status} ${response.statusText}`);
 
-    return data.access_token;
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            throw new Error(`Invalid M-Pesa Token response (Status ${response.status}). Body: ${text.substring(0, 100) || 'Empty'}`);
+        }
+
+        if (!response.ok) {
+            throw new Error(data.errorMessage || `M-Pesa Token Error: ${response.statusText}`);
+        }
+
+        return data.access_token;
+    } catch (error: any) {
+        console.error('M-Pesa Token Fetch Exception:', error);
+        throw error;
+    }
 }
 
 export async function initiateSTKPush(phoneNumber: string, amount: number): Promise<MpesaResponse> {
