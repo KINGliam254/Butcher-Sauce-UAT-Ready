@@ -6,19 +6,52 @@ export interface MpesaResponse {
     CustomerMessage: string;
 }
 
-export async function initiateSTKPush(phoneNumber: string, amount: number): Promise<MpesaResponse> {
-    const environment = process.env.MPESA_ENVIRONMENT || 'mock';
+async function getAccessToken(): Promise<string> {
+    const consumerKey = process.env.MPESA_CONSUMER_KEY;
+    const consumerSecret = process.env.MPESA_CONSUMER_SECRET;
+    const environment = process.env.MPESA_ENVIRONMENT || 'sandbox';
 
-    // Config check logs (non-sensitive)
-    console.log(`>>> [MPESA] Environment: ${environment}`);
-    console.log(`>>> [MPESA] Shortcode: ${process.env.MPESA_SHORTCODE ? 'SET' : 'MISSING'}`);
+    const url = environment === 'live'
+        ? 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+        : 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+
+    const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
+
+    const response = await fetch(url, {
+        headers: {
+            Authorization: `Basic ${auth}`,
+        },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.errorMessage || 'Failed to get M-Pesa access token');
+    }
+
+    return data.access_token;
+}
+
+export async function initiateSTKPush(phoneNumber: string, amount: number): Promise<MpesaResponse> {
+    const environment = process.env.MPESA_ENVIRONMENT || 'sandbox';
+    const shortcode = process.env.MPESA_SHORTCODE;
+    const passkey = process.env.MPESA_PASSKEY;
+
+    // Use the provided Vercel domain as fallback for the callback
+    const callbackBaseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://butcher-sauce-uat.vercel.app';
+    const callbackUrl = `${callbackBaseUrl}/api/mpesa/callback`;
+
+    // Format phone: 2547XXXXXXXX
+    let formattedPhone = phoneNumber.replace(/[^0-9]/g, '');
+    if (formattedPhone.startsWith('0')) {
+        formattedPhone = '254' + formattedPhone.substring(1);
+    } else if (formattedPhone.startsWith('+')) {
+        formattedPhone = formattedPhone.substring(1);
+    }
+
+    console.log(`>>> [MPESA] Initiating STK Push for ${formattedPhone} in ${environment} mode`);
 
     if (environment === 'mock') {
-        console.log(`>>> [MPESA-MOCK] Initiating STK Push for ${phoneNumber} - Amount: ${amount}`);
-
-        // Simulate a 1-second delay for the request
         await new Promise(resolve => setTimeout(resolve, 1000));
-
         return {
             MerchantRequestID: `MOCK-${Math.random().toString(36).substring(7)}`,
             CheckoutRequestID: `ws_CO_${Date.now()}`,
@@ -28,9 +61,46 @@ export async function initiateSTKPush(phoneNumber: string, amount: number): Prom
         };
     }
 
-    // Placeholder for real Safaricom logic
-    // You will need: MPESA_CONSUMER_KEY, MPESA_CONSUMER_SECRET, MPESA_SHORTCODE, MPESA_PASSKEY
-    console.log(`>>> [MPESA-LIVE] Real integration logic would core here using shortcode ${process.env.MPESA_SHORTCODE}`);
+    try {
+        const accessToken = await getAccessToken();
+        const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 14);
+        const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString('base64');
 
-    throw new Error('Real M-Pesa integration pending credentials configuration in .env');
+        const processUrl = environment === 'live'
+            ? 'https://api.safaricom.co.ke/mpesa/stkpush/v1/process'
+            : 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/process';
+
+        const payload = {
+            BusinessShortCode: shortcode,
+            Password: password,
+            Timestamp: timestamp,
+            TransactionType: "CustomerPayBillOnline",
+            Amount: Math.round(amount),
+            PartyA: formattedPhone,
+            PartyB: shortcode,
+            PhoneNumber: formattedPhone,
+            CallBackURL: callbackUrl,
+            AccountReference: "ButcherSauce",
+            TransactionDesc: "Payment for Order"
+        };
+
+        const response = await fetch(processUrl, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.errorMessage || 'M-Pesa STK Push failed');
+        }
+
+        return data;
+    } catch (error: any) {
+        console.error('M-Pesa API Error:', error);
+        throw error;
+    }
 }

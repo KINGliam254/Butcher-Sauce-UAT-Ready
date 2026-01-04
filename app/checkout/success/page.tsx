@@ -4,11 +4,45 @@ import { motion } from "framer-motion";
 import { CheckCircle, ShoppingBag, ArrowRight, MapPin, Smartphone, Truck } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 function SuccessContent() {
     const searchParams = useSearchParams();
     const orderId = searchParams.get("id");
+    const [status, setStatus] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (!orderId) return;
+
+        const pollStatus = async () => {
+            try {
+                const res = await fetch(`/api/orders/${orderId}/status`);
+                const data = await res.json();
+                setStatus(data);
+                setIsLoading(false);
+
+                // Stop polling if paid or failed
+                if (data.isPaid || data.status === 'cancelled') {
+                    return true;
+                }
+            } catch (err) {
+                console.error("Polling error:", err);
+            }
+            return false;
+        };
+
+        pollStatus();
+        const interval = setInterval(async () => {
+            const shouldStop = await pollStatus();
+            if (shouldStop) clearInterval(interval);
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [orderId]);
+
+    const isPaid = status?.isPaid || false;
+    const isAwaiting = status?.payment_status === 'awaiting_stk' || status?.payment_status === 'pending';
 
     return (
         <div className="max-w-3xl mx-auto px-6 text-center space-y-12">
@@ -35,8 +69,13 @@ function SuccessContent() {
                     transition={{ delay: 0.1 }}
                     className="text-5xl md:text-7xl font-serif font-bold text-black leading-tight"
                 >
-                    The Best <br />
-                    <span className="italic font-light text-zinc-400">is on Its Way.</span>
+                    {isPaid ? (
+                        <>Payment <span className="italic font-light text-zinc-400">Confirmed.</span></>
+                    ) : isAwaiting ? (
+                        <>Awaiting <span className="italic font-light text-zinc-400">Payment...</span></>
+                    ) : (
+                        <>The Best <br /> <span className="italic font-light text-zinc-400">is on Its Way.</span></>
+                    )}
                 </motion.h1>
                 <motion.p
                     initial={{ opacity: 0 }}
@@ -61,8 +100,15 @@ function SuccessContent() {
                 </div>
                 <div className="p-8 bg-neutral-soft rounded-sm space-y-4 text-left border border-ruby/20">
                     <Smartphone className="text-ruby" size={20} />
-                    <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">Confirm Now</p>
-                    <p className="text-sm font-serif italic text-black leading-relaxed mb-4">Click below to send your order receipt to our master butcher.</p>
+                    <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
+                        {isPaid ? "Payment Verified" : "Action Required"}
+                    </p>
+                    <p className="text-sm font-serif italic text-black leading-relaxed mb-4">
+                        {isPaid
+                            ? "Your payment was received successfully! We've started preparing your cuts."
+                            : "Please authorize the M-Pesa STK Push on your phone to complete the order."
+                        }
+                    </p>
                     <a
                         href={`https://wa.me/254795999555?text=${encodeURIComponent(`Hi Butcher & Sauce! I've just placed an order (Ref: #${orderId?.slice(-6).toUpperCase()}). Please confirm receipt and let me know the delivery ETA. Thank you!`)}`}
                         target="_blank"
