@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/utils/supabase/admin';
+import { sendTelegramMessage } from '@/utils/telegram';
 
 export async function POST(request: Request) {
     try {
@@ -42,6 +43,18 @@ export async function POST(request: Request) {
 
             if (error) {
                 console.error('Error updating order on success:', error);
+            } else {
+                // Send Telegram Notification
+                await sendTelegramMessage(`
+✅ <b>Payment Confirmed!</b> ✅
+
+<b>Receipt:</b> ${receipt}
+<b>Amount:</b> Ksh ${amount}
+<b>Phone:</b> ${phone}
+<b>Checkout ID:</b> ${CheckoutRequestID}
+
+Order status updated to <b>PAID</b>.
+                `.trim());
             }
         } else {
             // Failure

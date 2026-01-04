@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
+import { sendTelegramMessage } from '@/utils/telegram'
 
 export async function POST(request: Request) {
     try {
@@ -54,6 +55,22 @@ export async function POST(request: Request) {
             .insert(orderItems)
 
         if (itemsError) throw itemsError
+
+        // 3. Send Telegram Notification
+        const orderUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://butcher-sauce-uat.vercel.app'}/admin/orders/${order.id}`;
+        const message = `
+🌟 <b>New Order Placed!</b> 🌟
+
+<b>Order ID:</b> #${order.id.slice(-6).toUpperCase()}
+<b>Customer:</b> ${customer.name}
+<b>Phone:</b> ${customer.phone}
+<b>Total:</b> Ksh ${total.toLocaleString()}
+<b>Method:</b> ${payment.method.toUpperCase()}
+
+<a href="${orderUrl}">View Order in Admin Portal</a>
+        `.trim();
+
+        await sendTelegramMessage(message);
 
         return NextResponse.json({ success: true, orderId: order.id })
     } catch (error: any) {
