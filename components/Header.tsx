@@ -32,7 +32,7 @@ export default function Header() {
 
   return (
     <>
-      <nav className={`fixed w-full z-50 transition-all duration-500 px-6 md:px-12 py-6 ${scrolled ? "bg-white/80 backdrop-blur-md border-b border-black/5 py-4" : "bg-transparent"
+      <nav className={`fixed w-full z-50 transition-all duration-500 px-6 md:px-12 py-4 ${scrolled ? "bg-white/80 backdrop-blur-md border-b border-black/5 py-3" : "bg-transparent"
         }`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-12">
@@ -41,7 +41,7 @@ export default function Header() {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                className="relative w-20 md:w-28 aspect-[3.5/5]"
+                className="relative w-14 md:w-20 aspect-[3.5/5]"
               >
                 <Image
                   src="/logo.png"
