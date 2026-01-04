@@ -29,14 +29,15 @@ export default function CheckoutPage() {
 
     const [fulfillmentMethod, setFulfillmentMethod] = useState<"delivery" | "pickup">("delivery");
     const [pickupLocation, setPickupLocation] = useState("");
-    const [paymentMethod, setPaymentMethod] = useState<"mpesa" | "card" | "cash">("mpesa");
+    const [paymentMethod, setPaymentMethod] = useState<"mpesa" | "card" | "cash" | "bank">("mpesa");
     const [paymentDetails, setPaymentDetails] = useState({
         mpesaNumber: "",
         mpesaTransactionId: "",
         cardNumber: "",
         cardType: "unknown" as "visa" | "mastercard" | "unknown",
         expiry: "",
-        cvv: ""
+        cvv: "",
+        bankReference: ""
     });
 
     const deliveryFee = fulfillmentMethod === "delivery" ? 350 : 0;
@@ -98,7 +99,9 @@ export default function CheckoutPage() {
                             ...paymentDetails,
                             transactionId: paymentMethod === 'mpesa'
                                 ? paymentDetails.mpesaTransactionId
-                                : `BS-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+                                : paymentMethod === 'bank'
+                                    ? paymentDetails.bankReference
+                                    : `BS-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
                         }
                     },
                     total: total
@@ -291,22 +294,23 @@ export default function CheckoutPage() {
                                         <p className="text-zinc-500 font-light">Select your preferred method of settlement.</p>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                                         {[
                                             { id: "mpesa", name: "M-Pesa", icon: Smartphone },
+                                            { id: "bank", name: "Bank Transfer", icon: ShieldCheck },
                                             { id: "card", name: "Credit Card", icon: CreditCard },
                                             { id: "cash", name: "On Delivery", icon: MapPin }
                                         ].map((method) => (
                                             <div
                                                 key={method.id}
                                                 onClick={() => setPaymentMethod(method.id as any)}
-                                                className={`p-8 border rounded-sm cursor-pointer transition-all duration-500 flex flex-col items-center gap-4 text-center ${paymentMethod === method.id
+                                                className={`p-6 border rounded-sm cursor-pointer transition-all duration-500 flex flex-col items-center gap-4 text-center ${paymentMethod === method.id
                                                     ? "bg-black text-white border-black shadow-xl"
                                                     : "bg-neutral-soft border-black/5 text-zinc-400 hover:border-black/20"
                                                     }`}
                                             >
                                                 <method.icon size={24} />
-                                                <span className="text-[10px] uppercase tracking-widest font-bold">{method.name}</span>
+                                                <span className="text-[9px] uppercase tracking-widest font-bold whitespace-nowrap">{method.name}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -368,6 +372,60 @@ export default function CheckoutPage() {
                                             </motion.div>
                                         )}
 
+                                        {paymentMethod === "bank" && (
+                                            <motion.div
+                                                key="bank-fields"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                className="space-y-6"
+                                            >
+                                                <div className="p-8 bg-black text-white rounded-sm space-y-6">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-8 h-8 bg-ruby rounded-full flex items-center justify-center text-black font-black text-xs">1</div>
+                                                        <p className="text-[10px] uppercase tracking-widest font-bold">Transfer Details</p>
+                                                    </div>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                                                        <div className="space-y-1">
+                                                            <p className="text-[8px] uppercase tracking-widest text-zinc-500 font-bold">Bank Name</p>
+                                                            <p className="font-serif">Butcher & Sauce Artisanal Ltd</p>
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <p className="text-[8px] uppercase tracking-widest text-zinc-500 font-bold">Account Number</p>
+                                                            <p className="font-serif tracking-widest">123 456 7890</p>
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <p className="text-[8px] uppercase tracking-widest text-zinc-500 font-bold">Bank / Branch</p>
+                                                            <p className="font-serif">KCB Bank - Westlands Branch</p>
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <p className="text-[8px] uppercase tracking-widest text-zinc-500 font-bold">Paybill (Alt)</p>
+                                                            <p className="font-serif">522 522 (KCB)</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="p-8 bg-neutral-soft rounded-sm space-y-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white font-black text-xs">2</div>
+                                                        <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Verification</p>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <p className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold">Transaction Reference / ID</p>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full bg-white border border-black/5 px-4 py-4 rounded-sm focus:outline-none focus:border-ruby transition-all font-serif uppercase tracking-widest"
+                                                            placeholder="BK-XXXX-XXXX"
+                                                            value={paymentDetails.bankReference}
+                                                            onChange={(e) => setPaymentDetails({ ...paymentDetails, bankReference: e.target.value })}
+                                                        />
+                                                    </div>
+                                                    <p className="text-[9px] text-zinc-400 italic font-light">
+                                                        Enter your bank transfer reference ID for manual validation by our team.
+                                                    </p>
+                                                </div>
+                                            </motion.div>
+                                        )}
                                         {paymentMethod === "card" && (
                                             <motion.div
                                                 key="card-fields"
