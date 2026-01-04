@@ -4,12 +4,19 @@ import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
     try {
-        const cookieStore = cookies()
+        const cookieStore = await cookies()
         const supabase = createClient(cookieStore)
         const body = await request.json()
         const { customer, items, payment, total } = body
 
-        // 1. Insert Order
+        // 1. Initiate Payment if M-Pesa
+        let mpesaData = null;
+        if (payment.method === 'mpesa') {
+            const { initiateSTKPush } = await import('@/utils/mpesa');
+            mpesaData = await initiateSTKPush(customer.phone, total);
+        }
+
+        // 2. Insert Order
         const { data: order, error: orderError } = await supabase
             .from('orders')
             .insert({
@@ -22,7 +29,8 @@ export async function POST(request: Request) {
                 total_amount: total,
                 payment_method: payment.method,
                 payment_status: payment.method === 'mpesa' ? 'awaiting_stk' : 'pending',
-                transaction_id: payment.details?.transactionId || null,
+                transaction_id: mpesaData?.CheckoutRequestID || payment.details?.transactionId || null,
+                checkout_request_id: mpesaData?.CheckoutRequestID || null,
                 status: 'pending'
             })
             .select()

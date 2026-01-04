@@ -31,9 +31,9 @@ const historicalSpecs: Record<string, any> = {
     }
 };
 
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
 
     const { data: product } = await supabase

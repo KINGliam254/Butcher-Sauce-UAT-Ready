@@ -15,6 +15,7 @@ export default function CheckoutPage() {
     const { cart, subtotal, clearCart, totalItems } = useCart();
     const [step, setStep] = useState<Step>("delivery");
     const [isProcessing, setIsProcessing] = useState(false);
+    const [orderError, setOrderError] = useState<string | null>(null);
     const router = useRouter();
 
     // Form States
@@ -77,10 +78,8 @@ export default function CheckoutPage() {
 
     const handlePlaceOrder = async () => {
         setIsProcessing(true);
+        setOrderError(null);
         try {
-            // Simulate Payment Processing delay
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
             const response = await fetch("/api/orders", {
                 method: "POST",
                 headers: {
@@ -108,16 +107,44 @@ export default function CheckoutPage() {
 
             const result = await response.json();
 
-            if (result.success) {
-                clearCart();
-                router.push(`/checkout/success?id=${result.orderId}`);
-            } else {
+            if (!result.success) {
                 throw new Error(result.error || "Submission failed");
             }
+
+            // If M-Pesa, start polling
+            if (paymentMethod === 'mpesa') {
+                const orderId = result.orderId;
+                let attempts = 0;
+                const maxAttempts = 20; // 1 minute of polling (3s intervals)
+
+                const pollStatus = setInterval(async () => {
+                    attempts++;
+                    try {
+                        const statusRes = await fetch(`/api/orders/${orderId}/status`);
+                        const statusData = await statusRes.json();
+
+                        if (statusData.isPaid) {
+                            clearInterval(pollStatus);
+                            clearCart();
+                            router.push(`/checkout/success?id=${orderId}`);
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(pollStatus);
+                            setIsProcessing(false);
+                            setOrderError("Payment timeout. Please check your phone or try again.");
+                        }
+                    } catch (e) {
+                        console.error("Polling error:", e);
+                    }
+                }, 3000);
+            } else {
+                // Non M-Pesa flow (Cash/Card)
+                clearCart();
+                router.push(`/checkout/success?id=${result.orderId}`);
+            }
+
         } catch (error: any) {
             console.error("Checkout error:", error);
-            alert(`An error occurred: ${error.message}`);
-        } finally {
+            setOrderError(error.message);
             setIsProcessing(false);
         }
     };
@@ -492,12 +519,26 @@ export default function CheckoutPage() {
                                                     <ShieldCheck className="text-ruby" size={32} />
                                                 </div>
                                                 <div className="space-y-3">
-                                                    <h3 className="text-2xl font-serif font-bold">Processing Order...</h3>
-                                                    <p className="text-zinc-500 text-sm leading-relaxed">
-                                                        {paymentMethod === 'mpesa'
+                                                    <h3 className="text-2xl font-serif font-bold">
+                                                        {orderError ? "Payment Issue" : "Processing Order..."}
+                                                    </h3>
+                                                    <p className={`text-sm leading-relaxed ${orderError ? "text-rose-500 font-bold" : "text-zinc-500"}`}>
+                                                        {orderError || (paymentMethod === 'mpesa'
                                                             ? "Please check your phone for the M-Pesa STK push to authorize payment."
-                                                            : "Verifying your secure payment details with our bank partners."}
+                                                            : "Verifying your secure payment details with our bank partners.")
+                                                        }
                                                     </p>
+                                                    {orderError && (
+                                                        <button
+                                                            onClick={() => {
+                                                                setIsProcessing(false);
+                                                                setOrderError(null);
+                                                            }}
+                                                            className="mt-6 px-8 py-3 bg-black text-white text-[10px] uppercase tracking-widest font-bold rounded-sm border border-white/10 hover:bg-zinc-900 transition-all"
+                                                        >
+                                                            Try Again
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </div>
                                         </motion.div>

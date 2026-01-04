@@ -1,100 +1,51 @@
-"use client";
+import { cookies, headers } from "next/headers";
+import { notFound } from "next/navigation";
+import AdminLayoutClient from "./AdminLayoutClient";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-    LayoutDashboard,
-    ShoppingBag,
-    Package,
-    Settings,
-    ExternalLink,
-    TrendingUp,
-    Users
-} from "lucide-react";
-
-const sidebarLinks = [
-    { name: "Overview", href: "/admin", icon: LayoutDashboard },
-    { name: "Orders", href: "/admin/orders", icon: ShoppingBag },
-    { name: "Products", href: "/admin/products", icon: Package },
-    { name: "Inquiries", href: "/admin/inquiries", icon: Users },
-];
-
-export default function AdminLayout({
+export default async function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const pathname = usePathname();
+    const cookieStore = await cookies();
+    const adminSession = cookieStore.get("butcher-admin-session");
+    const headerList = await headers();
+    const pathname = headerList.get('x-pathname') || "";
 
-    return (
-        <div className="flex min-h-screen bg-[#0A0A0A] text-zinc-400 font-sans">
-            {/* Sidebar */}
-            <aside className="w-64 border-r border-zinc-800/50 flex flex-col bg-[#0A0A0A]">
-                <div className="p-8 border-b border-zinc-800/50">
-                    <Link href="/admin" className="flex flex-col gap-1 group">
-                        <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-white group-hover:text-gold transition-colors">
-                            Butcher <span className="text-gold">&</span> Sauce
-                        </h2>
-                        <span className="text-[10px] tracking-[0.4em] uppercase text-zinc-500 font-bold">Admin Portal</span>
-                    </Link>
-                </div>
+    console.log(`>>> [LAYOUT] Path: ${pathname} | Session: ${adminSession?.value ? 'PRESENT' : 'MISSING'}`);
 
-                <nav className="flex-1 p-6 space-y-2">
-                    {sidebarLinks.map((link) => {
-                        const isActive = pathname === link.href;
-                        return (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-sm text-[10px] uppercase tracking-widest font-bold transition-all duration-300 ${isActive
-                                    ? "bg-gold text-black shadow-lg shadow-gold/10"
-                                    : "hover:bg-zinc-900 hover:text-white"
-                                    }`}
-                            >
-                                <link.icon size={16} />
-                                {link.name}
-                            </Link>
-                        );
-                    })}
-                </nav>
+    // EXEMPT the login page from the security shield!
+    if (pathname === "/admin/login") {
+        return <>{children}</>;
+    }
 
-                <div className="p-6 border-t border-zinc-800/50 space-y-4">
-                    <Link
-                        href="/"
-                        className="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest font-bold hover:text-white transition-colors"
+    // Strict check for admin-session cookie
+    if (!adminSession || adminSession.value !== "authenticated") {
+        console.log(`>>> [LAYOUT] DENIED. Rendering Security Shield.`);
+        return (
+            <div className="min-h-screen bg-black flex items-center justify-center p-10 font-sans">
+                <div className="max-w-md w-full border border-red-900/20 bg-zinc-900/50 p-12 text-center space-y-8">
+                    <div className="w-16 h-16 bg-red-900/10 rounded-full flex items-center justify-center mx-auto">
+                        <span className="text-red-500 text-2xl">!</span>
+                    </div>
+                    <div className="space-y-4">
+                        <h1 className="text-white text-xl font-serif font-bold tracking-widest uppercase">Secured Area</h1>
+                        <p className="text-zinc-500 text-[10px] tracking-[0.2em] uppercase leading-relaxed">
+                            Access Denied. Unauthorized entry is restricted.
+                        </p>
+                    </div>
+                    <a
+                        href="/admin/login"
+                        target="_self"
+                        className="inline-block bg-white text-black px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-200 transition-all cursor-pointer"
                     >
-                        <ExternalLink size={16} />
-                        Visit Store
-                    </Link>
-                    <div className="flex items-center gap-3 px-4 py-3 opacity-30 cursor-not-allowed">
-                        <Settings size={16} />
-                        <span className="text-[10px] uppercase tracking-widest font-bold">Settings</span>
-                    </div>
+                        Authenticate
+                    </a>
                 </div>
-            </aside>
+            </div>
+        );
+    }
 
-            {/* Main Content */}
-            <main className="flex-1 overflow-y-auto">
-                {/* Header */}
-                <header className="h-20 border-b border-zinc-800/50 flex items-center justify-between px-10 bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50">
-                    <h1 className="text-[10px] uppercase tracking-[0.4em] font-bold text-zinc-500">
-                        {pathname === "/admin" ? "System Overview" : pathname.split("/").pop()}
-                    </h1>
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                            <span className="text-[8px] uppercase tracking-widest font-bold text-zinc-500">DB Connected</span>
-                        </div>
-                        <div className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center border-gold/20">
-                            <Users size={18} className="text-gold" />
-                        </div>
-                    </div>
-                </header>
-
-                <div className="p-10">
-                    {children}
-                </div>
-            </main>
-        </div>
-    );
+    console.log(`>>> [LAYOUT] GRANTED.`);
+    return <AdminLayoutClient>{children}</AdminLayoutClient>;
 }

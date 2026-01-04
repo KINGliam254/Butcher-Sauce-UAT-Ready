@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { cookies } from 'next/headers'
+import { createAdminClient } from '@/utils/supabase/admin'
 
 export async function POST(request: Request) {
     try {
-        const cookieStore = cookies()
-        const supabase = createClient(cookieStore)
+        const supabase = createAdminClient()
         const product = await request.json()
 
         const { data, error } = await supabase
@@ -27,8 +25,7 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
     try {
-        const cookieStore = cookies()
-        const supabase = createClient(cookieStore)
+        const supabase = createAdminClient()
         const { id, ...updates } = await request.json()
 
         if (!id) {
@@ -55,8 +52,7 @@ export async function PATCH(request: Request) {
 
 export async function DELETE(request: Request) {
     try {
-        const cookieStore = cookies()
-        const supabase = createClient(cookieStore)
+        const supabase = createAdminClient()
         const { id } = await request.json()
 
         if (!id) {

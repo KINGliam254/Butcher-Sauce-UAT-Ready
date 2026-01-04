@@ -69,6 +69,24 @@ export default function ProductsClientPage() {
         }
     };
 
+    const handleSeed = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch("/api/admin/products/seed", { method: "POST" });
+            const result = await response.json();
+            if (result.success) {
+                fetchProducts();
+            } else {
+                alert(`Seeding failed: ${result.error}`);
+            }
+        } catch (error) {
+            console.error("Error seeding database:", error);
+            alert("Failed to synchronize catalog.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const filteredProducts = products.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -163,9 +181,23 @@ export default function ProductsClientPage() {
                         </div>
                     ))}
                     {!filteredProducts.length && (
-                        <div className="col-span-full py-20 text-center border-2 border-dashed border-zinc-800/50 rounded-sm">
-                            <Package size={48} className="mx-auto text-zinc-800 mb-4" />
-                            <p className="text-zinc-600 text-sm font-light italic">The manifest reflects no entries matching your search.</p>
+                        <div className="col-span-full py-32 text-center border-2 border-dashed border-zinc-800/50 rounded-sm bg-zinc-900/10 space-y-8">
+                            <div className="space-y-4">
+                                <Package size={48} className="mx-auto text-zinc-800" />
+                                <div className="space-y-1">
+                                    <p className="text-zinc-400 text-sm font-serif italic text-white">The manifest reflects no entries.</p>
+                                    <p className="text-zinc-600 text-[10px] uppercase tracking-widest font-bold">Your artisanal stock is currently unpopulated</p>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={handleSeed}
+                                disabled={isLoading}
+                                className="mx-auto border border-ruby/30 text-ruby hover:bg-ruby hover:text-black px-10 py-4 rounded-sm text-[10px] uppercase tracking-[0.2em] font-bold transition-all flex items-center gap-3 group disabled:opacity-50"
+                            >
+                                <RefreshCw size={14} className={isLoading ? "animate-spin" : "group-hover:rotate-180 transition-transform duration-500"} />
+                                Apply Starter Catalog
+                            </button>
                         </div>
                     )}
                 </div>

@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import {
     TrendingUp,
@@ -8,11 +7,20 @@ import {
     ArrowDownRight,
     Clock
 } from "lucide-react";
+import { createAdminClient } from "@/utils/supabase/admin";
 import { formatCurrency } from "@/utils/format";
 
-export default async function AdminDashboard() {
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
+import { notFound } from "next/navigation";
+
+export default async function AdminPage() {
+    const cookieStore = await cookies();
+    const adminSession = cookieStore.get('admin-session');
+
+    if (!adminSession || adminSession.value !== 'authenticated') {
+        notFound();
+    }
+
+    const supabase = createAdminClient();
 
     // Fetch key metrics
     const { data: orders } = await supabase.from('orders').select('id, total_amount, status, created_at').order('created_at', { ascending: false });

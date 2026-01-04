@@ -1,40 +1,66 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from '@/utils/supabase/middleware'
+import { verifyToken } from '@/utils/auth'
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
+    const adminSession = request.cookies.get('butcher-admin-session');
+
+    // Create new headers object to pass pathname to server components
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set('x-pathname', pathname);
+
+    // SECURITY HEADERS
+    const responseHeaders = new Headers();
+    responseHeaders.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    responseHeaders.set('X-Frame-Options', 'DENY');
+    responseHeaders.set('X-Content-Type-Options', 'nosniff');
+    responseHeaders.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    responseHeaders.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.supabase.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.supabase.co https://images.unsplash.com; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://api.deepseek.com;");
+
+    console.log(`>>> [MIDDLEWARE] Path: ${pathname} | Token: ${adminSession?.value ? 'PRESENT' : 'MISSING'}`);
 
     // Admin protection logic
-    if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
-        const adminSession = request.cookies.get('admin-session');
+    const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api/admin');
+    const isLoginRoute = pathname === '/admin/login' || pathname === '/api/admin/login';
 
-        if (!adminSession) {
-            const url = request.nextUrl.clone();
-            url.pathname = '/admin/login';
-            return NextResponse.redirect(url);
+    if (isAdminRoute && !isLoginRoute) {
+        const payload = adminSession ? await verifyToken(adminSession.value) : null;
+
+        if (!payload || (payload as any).role !== 'admin') {
+            console.log(`>>> [MIDDLEWARE] BLOCKING ${pathname} -> Rewriting to 404`);
+            return NextResponse.rewrite(new URL('/404', request.url), {
+                headers: responseHeaders
+            });
         }
+        console.log(`>>> [MIDDLEWARE] ALLOWING ${pathname}`);
     }
 
-    // Optimization: Only update session if on an admin route or if a supabase auth cookie exists.
-    // This avoids blocking public page renders with unnecessary network requests to Supabase.
-    // Optimization: Only update session if strictly on an admin route.
-    // Public pages do NOT need server-side auth validation for this project.
+    let response = NextResponse.next({
+        request: {
+            headers: requestHeaders,
+        },
+    });
+
     if (pathname.startsWith('/admin')) {
-        return await updateSession(request);
+        response = await updateSession(request);
+        response.headers.set('x-pathname', pathname);
     }
 
-    return NextResponse.next();
+    // Apply security headers to final response
+    responseHeaders.forEach((value, key) => {
+        response.headers.set(key, value);
+    });
+
+    return response;
 }
 
 export const config = {
     matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         * - Public folder assets (images, logos, etc.)
-         */
-        '/((?!_next/static|_next/image|favicon.ico|logo\\.png|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff2?|map)$).*)',
+        '/admin',
+        '/admin/:path*',
+        '/api/admin',
+        '/api/admin/:path*',
+        '/((?!api|_next/static|_next/image|favicon.ico).*)', // Apply to all non-static routes
     ],
 }

@@ -150,13 +150,33 @@ export default function OrdersClientWrapper({ orders: initialOrders }: OrdersCli
                                     </div>
                                 </td>
                                 <td className="px-8 py-6 text-right">
-                                    <button
-                                        onClick={() => setSelectedOrder(order)}
-                                        className="p-2 hover:bg-zinc-900 rounded-sm transition-colors text-zinc-600 hover:text-ruby flex items-center justify-center gap-2"
-                                    >
-                                        <Eye size={18} />
-                                        <span className="text-[10px] uppercase tracking-widest font-bold hidden group-hover:block">Dossier</span>
-                                    </button>
+                                    <div className="flex items-center justify-end gap-2">
+                                        {order.payment_method === 'mpesa' && order.payment_status === 'awaiting_stk' && (
+                                            <button
+                                                onClick={async () => {
+                                                    const res = await fetch("/api/admin/orders", {
+                                                        method: "PATCH",
+                                                        headers: { "Content-Type": "application/json" },
+                                                        body: JSON.stringify({ orderId: order.id, payment_status: 'paid' }),
+                                                    });
+                                                    if (res.ok) {
+                                                        // Update local state temporarily
+                                                        setOrders(prev => prev.map(o => o.id === order.id ? { ...o, payment_status: 'paid' } : o));
+                                                    }
+                                                }}
+                                                className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[8px] uppercase tracking-widest font-bold rounded-full hover:bg-emerald-500 hover:text-white transition-all"
+                                            >
+                                                Verify Payment
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => setSelectedOrder(order)}
+                                            className="p-2 hover:bg-zinc-900 rounded-sm transition-colors text-zinc-600 hover:text-ruby flex items-center justify-center gap-2"
+                                        >
+                                            <Eye size={18} />
+                                            <span className="text-[10px] uppercase tracking-widest font-bold hidden group-hover:block">Dossier</span>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

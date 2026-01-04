@@ -44,7 +44,7 @@ export async function POST(req: Request) {
         }
 
         // 3. Context Discipline: Fetch products with metadata
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         const supabase = createClient(cookieStore);
         const { data: products } = await supabase
             .from("products")

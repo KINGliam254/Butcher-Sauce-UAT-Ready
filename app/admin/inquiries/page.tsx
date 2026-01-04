@@ -1,10 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+import { createAdminClient } from "@/utils/supabase/admin";
 import InquiriesList from "./InquiriesList";
 
 export default async function InquiriesPage() {
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createAdminClient();
 
     const { data: inquiries } = await supabase
         .from('corporate_inquiries')

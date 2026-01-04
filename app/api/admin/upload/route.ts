@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
+import { createAdminClient } from '@/utils/supabase/admin';
 
 export async function POST(request: Request) {
     try {
-        const cookieStore = cookies();
-        const supabase = createClient(cookieStore);
+        const supabase = createAdminClient();
 
         const formData = await request.formData();
         const file = formData.get('file') as File;

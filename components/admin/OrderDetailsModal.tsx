@@ -97,12 +97,25 @@ export default function OrderDetailsModal({ order, onClose }: OrderDetailsModalP
                                 {order.payment_method}
                             </span>
                         </div>
-                        <div className="flex items-center justify-between pt-4">
+                        <div className="flex items-center justify-between pt-4 border-t border-zinc-800/50">
                             <span className="text-[10px] uppercase tracking-[0.4em] text-gold font-bold">Total Valuation</span>
                             <span className="text-3xl font-serif font-bold text-white italic tracking-tight">
                                 {formatCurrency(order.total_amount)}
                             </span>
                         </div>
+
+                        {order.payment_method === 'mpesa' && (
+                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-zinc-800/50">
+                                <div className="space-y-1">
+                                    <p className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold">M-Pesa Receipt</p>
+                                    <p className="text-sm font-mono text-emerald-500 font-bold">{order.mpesa_receipt_number || "Awaiting Verification"}</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold">Checkout ID</p>
+                                    <p className="text-[10px] font-mono text-zinc-500 truncate">{order.checkout_request_id || "N/A"}</p>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 

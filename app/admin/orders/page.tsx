@@ -4,12 +4,10 @@ import {
 
 import StatusSelect from "@/components/admin/StatusSelect";
 import OrdersClientWrapper from "./OrdersClientWrapper";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+import { createAdminClient } from "@/utils/supabase/admin";
 
 export default async function OrdersPage() {
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createAdminClient();
 
     const { data: orders } = await supabase
         .from('orders')

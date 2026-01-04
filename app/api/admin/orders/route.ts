@@ -1,20 +1,27 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { cookies } from 'next/headers'
+import { createAdminClient } from '@/utils/supabase/admin'
 
 export async function PATCH(request: Request) {
     try {
-        const cookieStore = cookies()
-        const supabase = createClient(cookieStore)
-        const { orderId, status } = await request.json()
+        const supabase = createAdminClient()
+        const { orderId, status, payment_status } = await request.json()
 
-        if (!orderId || !status) {
-            return NextResponse.json({ error: 'Missing orderId or status' }, { status: 400 })
+        if (!orderId) {
+            return NextResponse.json({ error: 'Missing orderId' }, { status: 400 })
+        }
+
+        const updateData: any = {};
+        if (status) updateData.status = status;
+        if (payment_status) {
+            updateData.payment_status = payment_status;
+            if (payment_status === 'paid') {
+                updateData.mpesa_receipt_number = `MOCK${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+            }
         }
 
         const { error } = await supabase
             .from('orders')
-            .update({ status })
+            .update(updateData)
             .eq('id', orderId)
 
         if (error) throw error
