@@ -23,7 +23,14 @@ async function getAccessToken(): Promise<string> {
         },
     });
 
-    const data = await response.json();
+    const text = await response.text();
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (e) {
+        throw new Error(`Invalid M-Pesa Token response: ${text || 'Empty'}`);
+    }
+
     if (!response.ok) {
         throw new Error(data.errorMessage || 'Failed to get M-Pesa access token');
     }
@@ -93,7 +100,14 @@ export async function initiateSTKPush(phoneNumber: string, amount: number): Prom
             body: JSON.stringify(payload),
         });
 
-        const data = await response.json();
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            throw new Error(`Invalid M-Pesa STK Push response: ${text || 'Empty'}`);
+        }
+
         if (!response.ok) {
             throw new Error(data.errorMessage || 'M-Pesa STK Push failed');
         }

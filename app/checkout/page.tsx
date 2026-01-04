@@ -108,7 +108,15 @@ export default function CheckoutPage() {
                 }),
             });
 
-            const result = await response.json();
+            let result;
+            const text = await response.text();
+
+            try {
+                result = JSON.parse(text);
+            } catch (e) {
+                console.error("Failed to parse JSON response:", text);
+                throw new Error("Invalid server response. Please check terminal logs.");
+            }
 
             if (!result.success) {
                 throw new Error(result.error || "Submission failed");
