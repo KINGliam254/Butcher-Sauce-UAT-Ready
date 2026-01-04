@@ -13,6 +13,7 @@ import { formatCurrency } from "@/utils/format";
 import { notFound } from "next/navigation";
 
 export default async function AdminPage() {
+    const cookieStore = await cookies();
     // Middleware ensures valid token for /admin access
     const adminSession = cookieStore.get('butcher-admin-session');
     if (!adminSession) {
